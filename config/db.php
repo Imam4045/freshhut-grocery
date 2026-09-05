@@ -317,3 +317,4 @@ function rowsToArray($rows) {
     return array_map('rowToArray', $rows);
 }
 ?>
+
