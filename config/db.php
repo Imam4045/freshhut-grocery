@@ -54,24 +54,11 @@ define('DB_PORT', getenv('DB_PORT') ?: '18404');
 define('DB_SSL_CA', __DIR__ . '/ca.pem');
 
 // ── Auto Setup: runs only if 'users' table doesn't exist ──────
-function runAutoSetup($host, $user, $pass, $db) {
-    $dsn = "mysql:host=$host;port=" . DB_PORT . ";charset=utf8mb4";
-    $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
-    if (defined('DB_SSL_CA') && file_exists(DB_SSL_CA)) {
-        $options[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA;
-    }
-    $pdo = new PDO($dsn, $user, $pass, $options);
-
-    // Try to create the database. On shared/free hosting the DB user
-    // often isn't allowed to CREATE DATABASE — that's normal, since the
-    // host already created one for you. Just skip it instead of failing.
-    try {
-        $pdo->exec("CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-    } catch (PDOException $e) {
-        // No permission to create databases — ignore and continue.
-    }
-    $pdo->exec("USE `$db`");
-
+// Takes an already-open $pdo connection (with CREATE DATABASE / USE already
+// done) instead of opening its own — avoids a second SSL handshake to a
+// remote host on every single request, which was the main cause of slow
+// page loads.
+function runAutoSetup(PDO $pdo, $db) {
     // Check if already set up — skip table creation if tables exist,
     // but still make sure remember_token exists (auto-migrate older DBs).
     $tables = $pdo->query("SHOW TABLES LIKE 'users'")->fetchAll();
@@ -232,37 +219,53 @@ function runAutoSetup($host, $user, $pass, $db) {
     }
 }
 
-// ── Run auto setup silently before connecting ──────────────────
+// ── Single connection for the whole request ─────────────────────
+// Previously this file opened two separate PDO connections per request
+// (one just to check/create tables, one for everything else) — each one
+// a full TLS handshake to a remote host. That doubled the network latency
+// on every page load. Now we open one connection and reuse it for both.
 try {
-    runAutoSetup(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-} catch (PDOException $e) {
-    echo json_encode([
-        'status'  => 'error',
-        'message' => 'Auto setup failed: ' . $e->getMessage() . ' — Make sure MySQL is running in XAMPP!'
-    ]);
-    exit();
-}
-
-// ── Main connection ────────────────────────────────────────────
-try {
-    $mainOptions = [
+    $options = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
     if (defined('DB_SSL_CA') && file_exists(DB_SSL_CA)) {
-        $mainOptions[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA;
+        $options[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA;
     }
+    // Connect without a database selected yet, in case it doesn't exist
+    // (e.g. first-ever run on a fresh local/XAMPP setup).
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+        "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";charset=utf8mb4",
         DB_USER,
         DB_PASS,
-        $mainOptions
+        $options
     );
+
+    // Try to create the database. On shared/free hosting the DB user
+    // often isn't allowed to CREATE DATABASE — that's normal, since the
+    // host already created one for you. Just skip it instead of failing.
+    try {
+        $pdo->exec("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    } catch (PDOException $e) {
+        // No permission to create databases — ignore and continue.
+    }
+    $pdo->exec("USE `" . DB_NAME . "`");
 } catch (PDOException $e) {
     echo json_encode([
         'status'  => 'error',
         'message' => 'DB connection failed: ' . $e->getMessage()
+    ]);
+    exit();
+}
+
+// ── Run auto setup (table check/creation) on the same connection ───
+try {
+    runAutoSetup($pdo, DB_NAME);
+} catch (PDOException $e) {
+    echo json_encode([
+        'status'  => 'error',
+        'message' => 'Auto setup failed: ' . $e->getMessage()
     ]);
     exit();
 }
