@@ -202,31 +202,33 @@ function runAutoSetup($host, $user, $pass, $db) {
         // Dairy
         ['Fresh Milk (1L)',      'Dairy',            90,  60,  'Pure fresh cow milk, delivered daily'],
         ['Cheese Slice (200g)', 'Dairy',            120, 30,  'Processed cheese slices for sandwiches'],
-        ['Yogurt (400g)',        'Dairy',            55,  45,  'Creamy plain yogurt'],
+        ['Yogurt (400g)',        'Dairy',            55,  45,  'Creamy plain yogurt', 'prod_69e71de61a7997.06003742.jpeg'],
         ['Butter (200g)',        'Dairy',            95,  35,  'Fresh unsalted butter'],
         // Bakery
         ['Whole Wheat Bread',   'Bakery',           55,  45,  'Freshly baked whole wheat bread'],
         ['Croissant (4 pcs)',   'Bakery',           80,  25,  'Buttery flaky croissants, baked fresh'],
         // Beverages
         ['Orange Juice (1L)',   'Beverages',        110, 55,  'Freshly squeezed orange juice, no added sugar'],
-        ['Mineral Water (2L)',  'Beverages',        25,  120, 'Pure mineral water'],
-        ['Green Tea (25 bags)', 'Beverages',        85,  60,  'Premium green tea bags'],
+        ['Mineral Water (2L)',  'Beverages',        25,  120, 'Pure mineral water', 'prod_69e71924998614.63243403.jpeg'],
+        ['Green Tea (25 bags)', 'Beverages',        85,  60,  'Premium green tea bags', 'prod_69e71be433e6b8.20152549.jpeg'],
         // Snacks
-        ['Potato Chips (100g)', 'Snacks',           40,  90,  'Crispy lightly salted potato chips'],
-        ['Mixed Nuts (200g)',   'Snacks',           180, 30,  'Assorted premium roasted nuts'],
+        ['Potato Chips (100g)', 'Snacks',           40,  90,  'Crispy lightly salted potato chips', 'prod_69e719f8647510.01744592.jpeg'],
+        ['Mixed Nuts (200g)',   'Snacks',           180, 30,  'Assorted premium roasted nuts', 'prod_69e738f261ea54.41411868.jpeg'],
         // Meats
-        ['Chicken (1kg)',       'Meats',            220, 50,  'Fresh whole chicken, cleaned and ready to cook'],
-        ['Beef (1kg)',          'Meats',            380, 40,  "Fresh cow's beef, tender cuts for cooking"],
+        ['Chicken (1kg)',       'Meats',            220, 50,  'Fresh whole chicken, cleaned and ready to cook', 'prod_69e7397ec496b2.91489391.jpeg'],
+        ['Beef (1kg)',          'Meats',            850, 40,  "Fresh cow's beef, tender cuts for cooking", 'prod_69e73b3fe92557.06240149.jpeg'],
         // Health & Organic
-        ['Brown Rice (1kg)',    'Health & Organic', 95,  60,  'Whole grain brown rice, rich in fiber and nutrients'],
-        ['Cooking Oil (2L)',    'Health & Organic', 390, 75,  'Pure healthy cooking oil, ideal for everyday cooking'],
+        ['Brown Rice (1kg)',    'Health & Organic', 95,  60,  'Whole grain brown rice, rich in fiber and nutrients', 'prod_69e73d8b0d7fa4.22641328.jpeg'],
+        ['Cooking Oil (2L)',    'Health & Organic', 390, 75,  'Pure healthy cooking oil, ideal for everyday cooking', 'prod_69e740ad9e8487.33473068.jpeg'],
     ];
 
     $prodStmt = $pdo->prepare(
         "INSERT INTO products (name, category_id, price, stock, description, image) VALUES (?,?,?,?,?,?)"
     );
-    foreach ($products as [$name, $cat, $price, $stock, $desc]) {
-        $prodStmt->execute([$name, $catIds[$cat], $price, $stock, $desc, 'default.jpg']);
+    foreach ($products as $p) {
+        [$name, $cat, $price, $stock, $desc] = $p;
+        $img = $p[5] ?? 'default.jpg'; // real uploaded filename if given, else fallback
+        $prodStmt->execute([$name, $catIds[$cat], $price, $stock, $desc, $img]);
     }
 }
 
