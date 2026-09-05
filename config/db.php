@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // These read from environment variables (set in Render's dashboard,
 // NOT written here) so this file is safe to commit to a public repo.
 // The second argument to getenv() below is a local fallback for testing.
-define('DB_HOST', getenv('DB_HOST') ?: 'mysql-138c0be4-imam220826-52d9.j.aivencloud.com');
+define('DB_HOST', getenv('DB_HOST') ?: 'mysql-141c197d-imam220826-52d9.i.aivencloud.com');
 define('DB_USER', getenv('DB_USER') ?: 'avnadmin');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_NAME', getenv('DB_NAME') ?: 'defaultdb');
