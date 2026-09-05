@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - FreshHut</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green:       #6CB023;
+            --green-dark:  #558a1b;
+            --green-light: #f0f7e3;
+            --text:        #1c1c1e;
+            --text-mid:    #4a4a4a;
+            --muted:       #8a8a8a;
+            --border:      #e2e8e0;
+            --bg:          #f6f8f5;
+            --white:       #ffffff;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: var(--bg);
+            overflow: hidden;
+        }
+
+        /* ── LEFT IMAGE PANEL ─────────────────────────────── */
+        .auth-left {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .auth-left-bg {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=900&h=1200&fit=crop&q=85');
+            background-size: cover;
+            background-position: center;
+            animation: slowZoom 25s ease-in-out infinite;
+        }
+        @keyframes slowZoom {
+            0%   { transform: scale(1.0) translateX(0px); }
+            50%  { transform: scale(1.11) translateX(-14px); }
+            100% { transform: scale(1.04) translateX(8px); }
+        }
+
+        .auth-left-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.20) 0%,
+                rgba(0,0,0,0.10) 22%,
+                rgba(0,0,0,0.48) 55%,
+                rgba(5,18,5,0.95) 100%
+            );
+        }
+
+        .auth-left-content {
+            position: relative;
+            z-index: 2;
+            padding: 44px 52px;
+            animation: contentUp 1.1s .2s cubic-bezier(.22,.68,0,1.1) both;
+        }
+        @keyframes contentUp {
+            from { opacity: 0; transform: translateY(36px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .left-corner-badge {
+            position: absolute;
+            top: 36px; left: 52px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+            padding: 6px 16px;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.92);
+            text-transform: uppercase;
+            z-index: 2;
+        }
+        .badge-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #a8e040;
+            box-shadow: 0 0 8px rgba(168,224,64,0.9);
+            animation: pulseDot 2.2s infinite;
+        }
+        @keyframes pulseDot {
+            0%,100% { opacity: 1; }
+            50%      { opacity: 0.35; }
+        }
+
+        .left-headline {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 46px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 14px;
+            text-shadow: 0 2px 16px rgba(0,0,0,0.65), 0 4px 40px rgba(0,0,0,0.35);
+        }
+        .left-headline em {
+            color: #a8e040;
+            font-style: normal;
+        }
+
+        .left-desc {
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.95);
+            line-height: 1.7;
+            max-width: 380px;
+            margin-bottom: 32px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+            letter-spacing: 0.1px;
+        }
+
+        /* Perks */
+        .left-perks {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .left-perk {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            animation: perkFadeIn .7s both;
+        }
+        .left-perk:nth-child(1) { animation-delay: .35s; }
+        .left-perk:nth-child(2) { animation-delay: .55s; }
+        .left-perk:nth-child(3) { animation-delay: .75s; }
+        @keyframes perkFadeIn {
+            from { opacity: 0; transform: translateX(-18px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .perk-icon-wrap {
+            width: 38px; height: 38px;
+            border-radius: 11px;
+            background: rgba(108,176,35,0.22);
+            border: 1px solid rgba(108,176,35,0.38);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            backdrop-filter: blur(8px);
+        }
+        .perk-body strong {
+            display: block;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2px;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        }
+        .perk-body span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.62);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.35);
+        }
+
+        /* ── RIGHT FORM PANEL ─────────────────────────────── */
+        .auth-right {
+            width: 520px;
+            flex-shrink: 0;
+            background: var(--white);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 48px;
+            position: relative;
+            overflow-y: auto;
+            box-shadow: -2px 0 48px rgba(0,0,0,0.09);
+            animation: slideInRight .8s .05s cubic-bezier(.22,.68,0,1.15) both;
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .auth-right::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green) 0%, #a8e040 50%, var(--green) 100%);
+            background-size: 200% 100%;
+            animation: shimmerLine 3s linear infinite;
+        }
+        @keyframes shimmerLine {
+            0%   { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        .auth-form-wrap {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px 0;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+            margin-bottom: 28px;
+        }
+        .auth-logo svg { flex-shrink: 0; }
+        .logo-name-text {
+            display: block;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: .3px;
+        }
+        .logo-tagline-text {
+            display: block;
+            font-size: 10.5px;
+            color: var(--muted);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .auth-heading {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+        .auth-subheading {
+            font-size: 14.5px;
+            color: var(--muted);
+            margin-bottom: 26px;
+        }
+
+        /* Section label */
+        .form-section-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 14px;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .auth-form-group {
+            margin-bottom: 16px;
+        }
+        .auth-form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-mid);
+            margin-bottom: 7px;
+            letter-spacing: .15px;
+        }
+        .input-wrap {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 14px; top: 50%;
+            transform: translateY(-50%);
+            color: #b8c8b0;
+            pointer-events: none;
+            transition: color .2s;
+        }
+        .input-icon.top {
+            top: 14px;
+            transform: none;
+        }
+        .input-wrap:focus-within .input-icon {
+            color: var(--green);
+        }
+        .input-wrap input,
+        .input-wrap textarea {
+            width: 100%;
+            padding: 0 14px 0 42px;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            transition: border-color .2s, box-shadow .2s, background .2s;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .input-wrap input {
+            height: 46px;
+        }
+        .input-wrap textarea {
+            height: 88px;
+            padding: 12px 14px 12px 42px;
+            resize: none;
+            line-height: 1.55;
+        }
+        .input-wrap input::placeholder,
+        .input-wrap textarea::placeholder {
+            color: #c0ccc0;
+            font-weight: 500;
+        }
+        .input-wrap input:focus,
+        .input-wrap textarea:focus {
+            border-color: var(--green);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(108,176,35,0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .auth-submit {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: transform .22s, box-shadow .22s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(108,176,35,0.35);
+        }
+        .auth-submit::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        .auth-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(108,176,35,0.48);
+        }
+        .auth-submit:active { transform: translateY(0); }
+        .auth-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+        #msg { margin-bottom: 16px; }
+        .alert {
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 700;
+            border: 1.5px solid;
+        }
+        .alert-danger  {
+            background: #fff5f5;
+            color: #c0392b;
+            border-color: #fdd;
+        }
+        .alert-success {
+            background: var(--green-light);
+            color: var(--green-dark);
+            border-color: rgba(108,176,35,0.28);
+        }
+        .alert-success a { color: var(--green); }
+
+        .auth-footer {
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 600;
+            margin-top: 18px;
+        }
+        .auth-footer a {
+            color: var(--green);
+            font-weight: 800;
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .auth-footer a:hover { color: var(--green-dark); text-decoration: underline; }
+
+        .auth-back {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; margin-top: 18px;
+            font-size: 13px; color: var(--muted);
+            font-weight: 700; text-decoration: none;
+            transition: color .2s;
+        }
+        .auth-back:hover { color: var(--green); }
+
+        /* Responsive */
+        @media (max-width: 1000px) {
+            .auth-left { display: none; }
+            .auth-right { width: 100%; box-shadow: none; }
+        }
+        @media (max-width: 560px) {
+            .auth-right { padding: 28px 18px; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LEFT IMAGE PANEL -->
+<div class="auth-left">
+    <div class="auth-left-bg"></div>
+    <div class="auth-left-overlay"></div>
+
+    <div class="left-corner-badge">
+        <span class="badge-dot"></span>
+        Join FreshHut Today
+    </div>
+
+    <div class="auth-left-content">
+        <h1 class="left-headline">Your Fresh Start<br><em>Begins Here.</em></h1>
+        <p class="left-desc">Create a free account and unlock exclusive deals, fast delivery, and a world of fresh, organic produce — delivered right to your door.</p>
+
+        <div class="left-perks">
+            <div class="left-perk">
+                <div class="perk-icon-wrap">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a8e040" stroke-width="2" stroke-linecap="round">
+                        <path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/>
+                    </svg>
+                </div>
+                <div class="perk-body">
+                    <strong>Welcome Offer</strong>
+                    <span>Get 10% off your first order with code FRESH10</span>
+                </div>
+            </div>
+            <div class="left-perk">
+                <div class="perk-icon-wrap">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a8e040" stroke-width="2" stroke-linecap="round">
+                        <path d="M5 12H3l9-9 9 9h-2"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
+                    </svg>
+                </div>
+                <div class="perk-body">
+                    <strong>Order Tracking</strong>
+                    <span>Real-time tracking from farm to your door</span>
+                </div>
+            </div>
+            <div class="left-perk">
+                <div class="perk-icon-wrap">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a8e040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+                    </svg>
+                </div>
+                <div class="perk-body">
+                    <strong>2-Hour Delivery</strong>
+                    <span>Lightning-fast delivery straight to your door, every time</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- RIGHT FORM PANEL -->
+<div class="auth-right">
+    <div class="auth-form-wrap">
+
+        <a href="index.html" class="auth-logo">
+            <svg viewBox="0 0 40 40" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="lgAuth2" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs>
+                <circle cx="20" cy="20" r="19" fill="url(#lgAuth2)"/>
+                <path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/>
+                <path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div>
+                <span class="logo-name-text">FreshHut</span>
+                <span class="logo-tagline-text">Farm to Your Door</span>
+            </div>
+        </a>
+
+        <div class="auth-heading">Create your account</div>
+        <div class="auth-subheading">Join thousands of happy customers today</div>
+
+        <div id="msg"></div>
+
+        <div class="form-section-label">Personal Information</div>
+
+        <div class="auth-form-group">
+            <label>Full Name</label>
+            <div class="input-wrap">
+                <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <input type="text" id="name" placeholder="Your full name" autocomplete="name">
+            </div>
+        </div>
+
+        <div class="auth-form-group">
+            <label>Email Address</label>
+            <div class="input-wrap">
+                <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <input type="email" id="email" placeholder="your@email.com" autocomplete="email">
+            </div>
+        </div>
+
+        <div class="auth-form-group">
+            <label>Password</label>
+            <div class="input-wrap">
+                <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+                <input type="password" id="password" placeholder="At least 6 characters" autocomplete="new-password">
+            </div>
+        </div>
+
+        <div class="form-section-label" style="margin-top: 8px;">Contact (Optional)</div>
+
+        <div class="form-row">
+            <div class="auth-form-group">
+                <label>Phone Number</label>
+                <div class="input-wrap">
+                    <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.69 19.79 19.79 0 012 1.18 2 2 0 014 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14z"/>
+                    </svg>
+                    <input type="tel" id="phone" placeholder="+880 17XX XXXXXX" autocomplete="tel">
+                </div>
+            </div>
+            <div class="auth-form-group">
+                <label>City</label>
+                <div class="input-wrap">
+                    <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <input type="text" id="city" placeholder="Dhaka" autocomplete="address-level2">
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-form-group">
+            <label>Delivery Address</label>
+            <div class="input-wrap">
+                <svg class="input-icon top" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <textarea id="address" placeholder="Your full delivery address..."></textarea>
+            </div>
+        </div>
+
+        <button class="auth-submit" onclick="doRegister()" id="reg-btn">Create Account</button>
+
+        <div class="auth-footer">
+            Already have an account? <a href="login.html">Sign in here</a>
+        </div>
+
+        <a href="index.html" class="auth-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            Back to Store
+        </a>
+    </div>
+</div>
+
+<script>
+const API = 'api';
+async function doRegister() {
+    const name     = document.getElementById('name').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const phone    = document.getElementById('phone').value.trim();
+    const address  = document.getElementById('address').value.trim();
+    const msg      = document.getElementById('msg');
+    const btn      = document.getElementById('reg-btn');
+
+    if (!name || !email || !password) {
+        msg.innerHTML = '<div class="alert alert-danger">Name, email and password are required.</div>';
+        return;
+    }
+    if (password.length < 6) {
+        msg.innerHTML = '<div class="alert alert-danger">Password must be at least 6 characters.</div>';
+        return;
+    }
+
+    btn.textContent = 'Creating account...';
+    btn.disabled = true;
+
+    try {
+        const res  = await fetch(`${API}/register.php`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name,email,password,phone,address}) });
+        const data = await res.json();
+        if (data.status === 'success') {
+            msg.innerHTML = '<div class="alert alert-success">Account created! <a href="login.html">Sign in now</a></div>';
+            btn.textContent = 'Create Account';
+            btn.disabled = false;
+        } else {
+            msg.innerHTML = `<div class="alert alert-danger">${data.message || 'Registration failed.'}</div>`;
+            btn.textContent = 'Create Account';
+            btn.disabled = false;
+        }
+    } catch(e) {
+        msg.innerHTML = '<div class="alert alert-danger">Connection error. Is the server running?</div>';
+        btn.textContent = 'Create Account';
+        btn.disabled = false;
+    }
+}
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+</script>
+</body>
+</html>

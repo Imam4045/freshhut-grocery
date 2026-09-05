@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking - FreshHut</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Josefin+Sans:wght@300;400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    body { background: #f3f5f2; }
+
+    /* ── Page layout ── */
+    .trk-page { max-width: 960px; margin: 0 auto; padding: 40px 24px 70px; }
+
+    /* ── Hero header ── */
+    .trk-hero {
+        background: linear-gradient(135deg, #2e7d32 0%, #6CB023 100%);
+        border-radius: 20px;
+        padding: 36px 40px;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 24px; flex-wrap: wrap;
+        margin-bottom: 32px;
+        box-shadow: 0 8px 32px rgba(46,125,50,.25);
+    }
+    .trk-hero-text h1 {
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: 28px; font-weight: 700; color: #fff;
+        margin-bottom: 6px;
+    }
+    .trk-hero-text p { font-size: 14px; color: rgba(255,255,255,.8); }
+    .trk-hero-icon {
+        width: 80px; height: 80px; border-radius: 50%;
+        background: rgba(255,255,255,.15);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+
+    /* ── Search card ── */
+    .trk-search-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1.5px solid #e8ede8;
+        box-shadow: 0 4px 18px rgba(0,0,0,.06);
+        padding: 28px 32px;
+        margin-bottom: 28px;
+    }
+    .trk-search-card h3 {
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: 16px; font-weight: 700; color: #1c2e1c;
+        margin-bottom: 14px;
+        display: flex; align-items: center; gap: 8px;
+    }
+    .trk-search-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .trk-input-wrap {
+        flex: 1; min-width: 220px;
+        display: flex; align-items: center; gap: 10px;
+        background: #f8faf8;
+        border: 1.5px solid #e0eae0;
+        border-radius: 10px;
+        padding: 10px 16px;
+        transition: border-color .2s;
+    }
+    .trk-input-wrap:focus-within { border-color: #6CB023; background: #fff; }
+    .trk-input-wrap input {
+        flex: 1; border: none; background: none; outline: none;
+        font-size: 14.5px; font-weight: 600; color: #1a2e1a;
+        font-family: 'Josefin Sans', sans-serif; letter-spacing: .5px;
+    }
+    .trk-input-wrap input::placeholder { color: #b0b8b0; font-weight: 400; }
+    .trk-search-btn {
+        background: linear-gradient(135deg, #6CB023, #4e8c10);
+        color: #fff; border: none; border-radius: 10px;
+        padding: 11px 28px; font-size: 14px; font-weight: 800;
+        cursor: pointer; font-family: 'Nunito', sans-serif;
+        display: flex; align-items: center; gap: 8px;
+        transition: all .2s; white-space: nowrap;
+        box-shadow: 0 4px 14px rgba(108,176,35,.35);
+    }
+    .trk-search-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(108,176,35,.45); }
+    .trk-search-hint { font-size: 12.5px; color: #9aaa9a; margin-top: 10px; }
+    .trk-search-hint a { color: #6CB023; text-decoration: none; font-weight: 600; }
+
+    /* ── Success banner ── */
+    .trk-success-banner {
+        background: linear-gradient(135deg, #e8f5e9, #f0f7e3);
+        border: 1.5px solid #c8e6c9; border-radius: 14px;
+        padding: 18px 22px; display: flex; align-items: center; gap: 16px;
+        margin-bottom: 24px;
+    }
+    .trk-success-icon {
+        width: 46px; height: 46px; border-radius: 50%; background: #6CB023;
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        box-shadow: 0 4px 14px rgba(108,176,35,.35);
+    }
+    .trk-success-banner h4 { font-size: 15px; font-weight: 800; color: #2e7d32; margin-bottom: 3px; }
+    .trk-success-banner p  { font-size: 13.5px; color: #555; }
+
+    /* ── Order card ── */
+    .trk-order-card {
+        background: #fff; border-radius: 18px;
+        border: 1.5px solid #e8ede8;
+        box-shadow: 0 4px 20px rgba(0,0,0,.07);
+        overflow: hidden; margin-bottom: 20px;
+    }
+    .trk-order-hd {
+        background: linear-gradient(135deg, #2e7d32 0%, #6CB023 100%);
+        padding: 22px 28px;
+        display: flex; align-items: center; justify-content: space-between;
+        flex-wrap: wrap; gap: 14px;
+    }
+    .trk-order-hd-id {
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: 20px; font-weight: 700; color: #fff;
+    }
+    .trk-order-hd-date { font-size: 12.5px; color: rgba(255,255,255,.75); margin-top: 3px; }
+    .trk-hd-badge {
+        background: rgba(255,255,255,.18); border: 1.5px solid rgba(255,255,255,.35);
+        border-radius: 20px; padding: 6px 16px;
+        font-size: 12.5px; font-weight: 800; color: #fff;
+        display: flex; align-items: center; gap: 7px;
+    }
+    .trk-hd-dot {
+        width: 8px; height: 8px; border-radius: 50%; background: #fff;
+        animation: pulse-dot 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.65)} }
+
+    /* Info strip */
+    .trk-info-strip {
+        display: flex; flex-wrap: wrap;
+        border-bottom: 1.5px solid #f0f4f0;
+    }
+    .trk-info-cell {
+        flex: 1; min-width: 130px;
+        padding: 16px 24px; border-right: 1.5px solid #f0f4f0;
+    }
+    .trk-info-cell:last-child { border-right: none; }
+    .trk-info-lbl { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px; color: #9aaa9a; margin-bottom: 5px; }
+    .trk-info-val { font-size: 14.5px; font-weight: 800; color: #1a2e1a; }
+    .trk-info-val.green { color: #6CB023; }
+
+    /* ── Progress stepper ── */
+    .trk-progress-section { padding: 28px 28px 22px; border-bottom: 1.5px solid #f0f4f0; }
+    .trk-progress-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: #9aaa9a; margin-bottom: 24px; }
+    .trk-stepper { display: flex; align-items: flex-start; justify-content: space-between; position: relative; }
+    .trk-stepper::before {
+        content: ''; position: absolute; top: 22px; left: 22px; right: 22px;
+        height: 3px; background: #eaf0ea; z-index: 0;
+    }
+    .trk-fill-bar {
+        position: absolute; top: 22px; left: 22px;
+        height: 3px; background: linear-gradient(90deg, #2e7d32, #6CB023);
+        z-index: 1; transition: width .7s ease; border-radius: 2px;
+    }
+    .trk-step {
+        flex: 1; display: flex; flex-direction: column; align-items: center;
+        gap: 10px; position: relative; z-index: 2;
+    }
+    .trk-step-dot {
+        width: 44px; height: 44px; border-radius: 50%;
+        background: #f0f4f0; border: 3px solid #dde8dd;
+        display: flex; align-items: center; justify-content: center;
+        transition: all .35s;
+    }
+    .trk-step-dot svg { transition: stroke .3s; stroke: #ccc; }
+    .trk-step.done  .trk-step-dot { background: #6CB023; border-color: #6CB023; box-shadow: 0 4px 14px rgba(108,176,35,.4); }
+    .trk-step.done  .trk-step-dot svg { stroke: #fff; }
+    .trk-step.active .trk-step-dot { background: #fff; border-color: #6CB023; box-shadow: 0 0 0 5px rgba(108,176,35,.18); animation: ring 1.6s ease-in-out infinite; }
+    .trk-step.active .trk-step-dot svg { stroke: #6CB023; }
+    @keyframes ring { 0%,100%{box-shadow:0 0 0 5px rgba(108,176,35,.18)} 50%{box-shadow:0 0 0 9px rgba(108,176,35,.07)} }
+    .trk-step-name { font-size: 11.5px; font-weight: 700; color: #c0c8c0; text-align: center; max-width: 70px; line-height: 1.3; }
+    .trk-step.done .trk-step-name,
+    .trk-step.active .trk-step-name { color: #2e5e10; }
+    .trk-step-ts { font-size: 10px; color: #b8c8b8; text-align: center; }
+
+    /* Cancelled */
+    .trk-cancelled {
+        margin: 24px 28px;
+        background: #ffebee; border: 1.5px solid #ffcdd2; border-radius: 12px;
+        padding: 18px 22px; display: flex; align-items: center; gap: 14px;
+        color: #c62828; font-weight: 700; font-size: 14.5px;
+    }
+
+    /* ── Items table ── */
+    .trk-items-section { padding: 22px 28px; border-bottom: 1.5px solid #f0f4f0; }
+    .trk-items-lbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px; color: #9aaa9a; margin-bottom: 14px; }
+    .trk-items-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .trk-items-tbl thead th { padding: 8px 10px; text-align: left; font-size: 10.5px; font-weight: 800; color: #bbb; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1.5px solid #f0f4f0; }
+    .trk-items-tbl thead th:last-child { text-align: right; }
+    .trk-items-tbl tbody td { padding: 11px 10px; border-bottom: 1px solid #f8f8f8; vertical-align: middle; }
+    .trk-items-tbl tbody tr:last-child td { border-bottom: none; }
+    .trk-items-tbl tbody td:last-child { text-align: right; font-weight: 800; color: #6CB023; }
+    .trk-item-wrap { display: flex; align-items: center; gap: 12px; }
+    .trk-item-img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; border: 1px solid #f0f4f0; flex-shrink: 0; }
+    .trk-item-name { font-weight: 700; color: #1c1c1e; font-size: 14px; }
+    .trk-item-cat  { font-size: 11.5px; color: #aaa; }
+
+    /* ── Footer ── */
+    .trk-order-ft {
+        padding: 20px 28px; display: flex; align-items: flex-end;
+        justify-content: space-between; flex-wrap: wrap; gap: 14px;
+    }
+    .trk-addr-lbl { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px; color: #9aaa9a; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+    .trk-addr-val { font-size: 13.5px; font-weight: 600; color: #444; line-height: 1.5; max-width: 340px; }
+    .trk-total-lbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: #9aaa9a; margin-bottom: 4px; text-align: right; }
+    .trk-total-amt { font-family: 'Josefin Sans', sans-serif; font-size: 28px; font-weight: 700; color: #6CB023; text-align: right; }
+
+    /* ── Orders list ── */
+    .trk-list-hd { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .trk-list-ttl { font-family: 'Josefin Sans', sans-serif; font-size: 20px; font-weight: 700; color: #1c2e1c; }
+    .trk-rows { display: flex; flex-direction: column; gap: 12px; }
+    .trk-row {
+        background: #fff; border-radius: 14px; border: 1.5px solid #e8ede8;
+        padding: 18px 24px; display: flex; align-items: center;
+        justify-content: space-between; gap: 16px; flex-wrap: wrap;
+        box-shadow: 0 2px 8px rgba(0,0,0,.04);
+        transition: transform .2s, box-shadow .2s;
+    }
+    .trk-row:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.09); }
+    .trk-row-num { font-family: 'Josefin Sans', sans-serif; font-size: 16px; font-weight: 700; color: #1c1c1e; display: block; }
+    .trk-row-date { font-size: 12.5px; color: #aaa; font-weight: 600; margin-top: 2px; }
+    .trk-row-amt { font-family: 'Josefin Sans', sans-serif; font-size: 18px; font-weight: 700; color: #1c1c1e; }
+    .trk-btn {
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 9px 20px; border-radius: 9px; border: none;
+        font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
+        text-decoration: none; cursor: pointer; transition: all .2s;
+    }
+    .trk-btn-primary { background: linear-gradient(135deg,#6CB023,#4e8c10); color:#fff; box-shadow:0 3px 12px rgba(108,176,35,.3); }
+    .trk-btn-primary:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(108,176,35,.4); }
+
+    /* Status badges */
+    .trk-status { display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:20px;font-size:12.5px;font-weight:800; }
+    .trk-sdot { width:7px;height:7px;border-radius:50%; }
+    .s-pending    { background:#fff8e1;color:#f57c00; }
+    .s-confirmed  { background:#e3f2fd;color:#1565c0; }
+    .s-processing { background:#f3e5f5;color:#6a1b9a; }
+    .s-delivery   { background:#e0f7fa;color:#00838f; }
+    .s-delivered  { background:#e8f5e9;color:#2e7d32; }
+    .s-cancelled  { background:#ffebee;color:#c62828; }
+
+    /* ── Empty / Error / Loading ── */
+    .trk-state { background:#fff;border-radius:18px;border:1.5px solid #e8ede8;text-align:center;padding:60px 20px;box-shadow:0 2px 8px rgba(0,0,0,.04); }
+    .trk-state h3 { font-size:17px;color:#444;margin:14px 0 6px; }
+    .trk-state p  { font-size:13.5px;color:#aaa;margin-bottom:22px; }
+    .trk-spinner { width:38px;height:38px;border-radius:50%;border:3px solid #e8ede8;border-top-color:#6CB023;animation:spin .7s linear infinite;margin:0 auto 14px; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+
+    /* ── Breadcrumb ── */
+    .trk-breadcrumb { display:flex;align-items:center;gap:8px;font-size:13px;color:#aaa;font-weight:600;margin-bottom:20px;flex-wrap:wrap; }
+    .trk-breadcrumb a { color:#6CB023;text-decoration:none; }
+    .trk-breadcrumb a:hover { opacity:.75; }
+
+    @media(max-width:640px) {
+        .trk-page { padding:20px 14px 40px; }
+        .trk-hero { padding:24px 20px; }
+        .trk-hero-icon { display:none; }
+        .trk-order-ft { flex-direction:column;align-items:flex-start; }
+        .trk-total-lbl,.trk-total-amt { text-align:left; }
+        .trk-step-name { font-size:10px;max-width:54px; }
+    }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div class="top-bar-inner">
+        <div class="top-bar-left"></div>
+        <div class="top-bar-center">
+            Welcome to our Organic store <strong>FreshHut!</strong>
+        </div>
+
+    </div>
+</div>
+
+<!-- MAIN HEADER -->
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="logo fm-logo">
+            <span class="fm-logo-mark" aria-hidden="true">
+                <svg viewBox="0 0 40 40" width="38" height="38"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#g1)"/><path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/><path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+            <div class="logo-text">
+                <span class="logo-name">FreshHut</span>
+                <span class="logo-tagline">Farm to Your Door</span>
+            </div>
+        </a>
+        <div class="header-search">
+            <div class="search-box">
+                <input type="text" id="srch" placeholder="Search for products, categories...">
+                <button onclick="window.location.href='products.html'" class="search-submit-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Search
+                </button>
+            </div>
+        </div>
+        <div class="header-icons">
+                        <div class="hicon-dropdown" id="account-dropdown-wrap">
+                <a href="#" class="hicon" id="header-account-link" onclick="toggleAccountDropdown(event)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="hicon-label" id="account-label">Account</span>
+                </a>
+                <div class="account-dropdown" id="account-dropdown">
+                    <a href="login.html" class="account-dropdown-item">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Login
+                    </a>
+                    <a href="register.html" class="account-dropdown-item">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Register
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- NAVIGATION -->
+<nav class="main-nav">
+    <div class="nav-inner">
+        <div class="nav-cats-wrap header-cats">
+            <button class="nav-cats-toggle" id="cats-toggle-btn" onclick="toggleCatMenu(this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                All Categories
+                <svg class="cat-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cats-dropdown" id="cats-dropdown">
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e8f5e9;"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=40&h=40&fit=crop" alt="Vegetables"></span>Vegetables</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fff3e0;"><img src="https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=40&h=40&fit=crop" alt="Fruits"></span>Fruits</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e3f2fd;"><img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=40&h=40&fit=crop" alt="Dairy"></span>Dairy &amp; Eggs</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fce4ec;"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=40&h=40&fit=crop" alt="Bakery"></span>Breads &amp; Bakery</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#f3e5f5;"><img src="uploads/products/Bevarage.jpeg" 
+                alt="Beverages"></span>Beverages</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fff8e1;"><img src="https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=40&h=40&fit=crop" alt="Snacks"></span>Snacks &amp; Chips</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e8eaf6;"><img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=40&h=40&fit=crop" alt="Frozen"></span>Frozen Foods</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e0f2f1;"><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=40&h=40&fit=crop" alt="Health"></span>Health &amp; Organic</a>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="products.html" class="nav-link">Products</a>
+            <a href="tracking.html" class="nav-link nav-link-active">My Orders</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-promo-text">
+            Get 10% off with code
+            <span class="nav-promo-badge">FRESH10</span>
+        </div>
+    </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="trk-page">
+
+    <!-- Hero -->
+    <div class="trk-hero">
+        <div class="trk-hero-text">
+            <h1>Order Tracking</h1>
+            <p>Monitor the live status of your deliveries in real time</p>
+        </div>
+        <div class="trk-hero-icon">
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
+                <rect x="1" y="3" width="15" height="13" rx="1"/>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+                <circle cx="5.5" cy="18.5" r="2.5"/>
+                <circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Search box -->
+    <div class="trk-search-card">
+        <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6CB023" stroke-width="2.3"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Track a Specific Order
+        </h3>
+        <div class="trk-search-row">
+            <div class="trk-input-wrap">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#b0b8b0" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+                <input type="text" id="trk-input" placeholder="Enter Order ID  e.g. A1B2C3D4" oninput="this.value=this.value.toUpperCase()">
+            </div>
+            <button class="trk-search-btn" onclick="searchOrder()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Track Order
+            </button>
+        </div>
+        <p class="trk-search-hint">Find your Order ID in <a href="user/profile.html">My Account → Order History</a></p>
+    </div>
+
+    <!-- Dynamic area -->
+    <div id="trk-result"></div>
+
+    <!-- All orders list -->
+    <div id="trk-orders-wrap">
+        <div class="trk-state">
+            <div class="trk-spinner"></div>
+            <p style="color:#bbb;font-size:13px;">Loading your orders...</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="footer-top">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <span class="fm-logo-mark" aria-hidden="true" style="border:2px solid #1b5e20;border-radius:50%;display:inline-flex;">
+                    <svg viewBox="0 0 40 40" width="38" height="38"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#g1)"/><path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/><path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <div class="logo-text">
+                    <span class="logo-name" style="color:#fff;">FreshHut</span>
+                    <span class="logo-tagline" style="color:rgba(255,255,255,0.65);">Farm to Your Door</span>
+                </div>
+            </div>
+            <p>Your trusted online grocery store delivering the freshest produce from farms directly to your doorstep in Dhaka.</p>
+            <div class="footer-contacts">
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.17 10.4a19.79 19.79 0 01-3.07-8.68A2 2 0 012.08 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+                    +880 1700 000000
+                </div>
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    support@freshhut.com.bd
+                </div>
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Delivery: Dhaka, Bangladesh
+                </div>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="footer-social-btn" title="Facebook">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                </a>
+                <a href="#" class="footer-social-btn" title="Instagram">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="#" class="footer-social-btn" title="LinkedIn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="footer-right-col">
+            <div class="footer-deliver-col">
+                <h5>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="vertical-align:-2px;margin-right:6px;"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    We Deliver To
+                </h5>
+                <div class="footer-deliver-row">
+                    <span>Dhaka City</span>
+                    <span>Gulshan &amp; Banani</span>
+                    <span>Mirpur</span>
+                    <span>Uttara</span>
+                    <span>Dhanmondi</span>
+                    <span>Mohammadpur</span>
+                    <span>Wari</span>
+                    <span>Motijheel</span>
+                </div>
+            </div>
+            <div class="footer-legal-col">
+                <h5>Legal</h5>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-policy-bar">
+        <div class="footer-policy-inner">
+            <p>&copy; 2025 <strong>FreshHut</strong>. All rights reserved. Fresh groceries delivered to your door.</p>
+        </div>
+    </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="js/product-img.js"></script>
+<script src="js/main.js"></script>
+<script>
+/* ── Auth setup ── */
+(function() {
+    try {
+        const u = JSON.parse(localStorage.getItem('user') || 'null');
+        if (u) {
+            const dest = u.role === 'admin' ? 'admin/index.html' : 'user/profile.html';
+            const hd = document.getElementById('header-account-link');
+            if (hd) hd.href = dest;
+        }
+    } catch(e) {}
+})();
+
+function toggleCatMenu(btn) {
+    document.getElementById('cats-dropdown').classList.toggle('open');
+    btn.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-cats-wrap') && !e.target.closest('.header-cats')) {
+        const d = document.getElementById('cats-dropdown');
+        const b = document.getElementById('cats-toggle-btn');
+        if (d) d.classList.remove('open');
+        if (b) b.classList.remove('open');
+    }
+});
+
+/* ── Helpers ── */
+const TRK_API = 'api';
+function trkUser() { try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch { return null; } }
+function esc(s) { const d = document.createElement('div'); d.textContent = String(s||''); return d.innerHTML; }
+function fmt(ds) {
+    if (!ds) return '—';
+    return new Date(ds).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+}
+function fmtFull(ds) {
+    if (!ds) return '—';
+    return new Date(ds).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+function statusBadge(s) {
+    const m = { Pending:{c:'s-pending',d:'#f57c00'}, Confirmed:{c:'s-confirmed',d:'#1565c0'}, Processing:{c:'s-processing',d:'#6a1b9a'}, 'Out for Delivery':{c:'s-delivery',d:'#00838f'}, Delivered:{c:'s-delivered',d:'#2e7d32'}, Cancelled:{c:'s-cancelled',d:'#c62828'} };
+    const x = m[s] || {c:'s-pending',d:'#888'};
+    return `<span class="trk-status ${x.c}"><span class="trk-sdot" style="background:${x.d}"></span>${esc(s)}</span>`;
+}
+
+const STEPS = [
+    { key:'Pending',          label:'Order Placed', icon:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>' },
+    { key:'Confirmed',        label:'Confirmed',    icon:'<path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' },
+    { key:'Processing',       label:'Processing',   icon:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>' },
+    { key:'Out for Delivery', label:'Out for\nDelivery', icon:'<rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>' },
+    { key:'Delivered',        label:'Delivered',    icon:'<path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M9 11l3 3L22 4"/>' },
+];
+const S_ORDER = ['Pending','Confirmed','Processing','Out for Delivery','Delivered'];
+
+const DEF_IMG = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=80&h=80&fit=crop';
+function pImg(item) {
+    return PROD_IMG.resolve(item, 'uploads/products/', 100, 100);
+}
+
+/* ── Render order detail ── */
+function renderDetail(order, items) {
+    const cidx = S_ORDER.indexOf(order.status);
+    const cancelled = order.status === 'Cancelled';
+    const pct = cancelled ? 0 : Math.max(0, Math.min(100, (cidx/(S_ORDER.length-1))*100));
+    const trackWidth = `calc(${pct}% - 44px)`;
+
+    const stepper = cancelled
+        ? `<div class="trk-cancelled">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              This order has been cancelled.
+           </div>`
+        : `<div class="trk-progress-section">
+               <div class="trk-progress-label">Delivery Progress</div>
+               <div class="trk-stepper">
+                   <div class="trk-fill-bar" style="width:${trackWidth}"></div>
+                   ${STEPS.map((s,i) => {
+                       const done = cidx > i, active = cidx === i;
+                       return `<div class="trk-step ${done?'done':active?'active':''}">
+                           <div class="trk-step-dot">
+                               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">${done?'<polyline points="20 6 9 17 4 12"/>':s.icon}</svg>
+                           </div>
+                           <div class="trk-step-name">${s.label.replace('\n','<br>')}</div>
+                           ${done||active?`<div class="trk-step-ts">${fmt(order.created_at)}</div>`:'<div class="trk-step-ts">&nbsp;</div>'}
+                       </div>`;
+                   }).join('')}
+               </div>
+           </div>`;
+
+    const itemsHtml = items && items.length ? `
+        <div class="trk-items-section">
+            <div class="trk-items-lbl">Order Items (${items.length})</div>
+            <table class="trk-items-tbl">
+                <thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
+                <tbody>
+                    ${items.map(item => {
+                        const tSrc = pImg(item);
+                        const tFb  = PROD_IMG.byName(item.name, item.category, 100, 100);
+                        return `<tr>
+                        <td><div class="trk-item-wrap">
+                            <img class="trk-item-img" src="${tSrc}" alt="${esc(item.name||'')}" onerror="this.src='${tFb}'">
+                            <div><div class="trk-item-name">${esc(item.name||'Product')}</div>${item.category?`<div class="trk-item-cat">${esc(item.category)}</div>`:''}</div>
+                        </div></td>
+                        <td style="font-weight:700;color:#555">${item.quantity}</td>
+                        <td style="color:#555">&#2547;${parseFloat(item.price).toFixed(2)}</td>
+                        <td>&#2547;${(item.price*item.quantity).toFixed(2)}</td>
+                    </tr>`;
+                    }).join('')}
+                </tbody>
+            </table>
+        </div>` : '';
+
+    return `
+    <div class="trk-order-card">
+        <div class="trk-order-hd">
+            <div>
+                <div class="trk-order-hd-id">Order #${esc(String(order.id).slice(-8).toUpperCase())}</div>
+                <div class="trk-order-hd-date">Placed on ${fmtFull(order.created_at)}</div>
+            </div>
+            <div class="trk-hd-badge">${cancelled?'':'<div class="trk-hd-dot"></div>'}${esc(order.status)}</div>
+        </div>
+        <div class="trk-info-strip">
+            <div class="trk-info-cell"><div class="trk-info-lbl">Total</div><div class="trk-info-val green">&#2547;${parseFloat(order.total_amount).toFixed(2)}</div></div>
+            <div class="trk-info-cell"><div class="trk-info-lbl">Payment</div><div class="trk-info-val">${esc(order.payment_method||'Cash on Delivery')}</div></div>
+            <div class="trk-info-cell"><div class="trk-info-lbl">Items</div><div class="trk-info-val">${(items||[]).length} item${(items||[]).length!==1?'s':''}</div></div>
+        </div>
+        ${stepper}
+        ${itemsHtml}
+        <div class="trk-order-ft">
+            <div>
+                <div class="trk-addr-lbl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9aaa9a" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Delivery Address</div>
+                <div class="trk-addr-val">${esc(order.delivery_address||'—')}</div>
+            </div>
+            <div>
+                <div class="trk-total-lbl">Order Total</div>
+                <div class="trk-total-amt">&#2547;${parseFloat(order.total_amount).toFixed(2)}</div>
+            </div>
+        </div>
+    </div>`;
+}
+
+/* ── Search specific order ── */
+async function searchOrder() {
+    const raw = (document.getElementById('trk-input')?.value || '').trim();
+    const result = document.getElementById('trk-result');
+    if (!raw) {
+        result.innerHTML = `<div class="trk-state" style="margin-bottom:24px"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h3>Enter an Order ID</h3><p>Type your order ID above to see details.</p></div>`;
+        return;
+    }
+    result.innerHTML = `<div class="trk-state" style="margin-bottom:24px"><div class="trk-spinner"></div><p style="color:#bbb;font-size:13px;">Searching...</p></div>`;
+    try {
+        const res  = await fetch(`${TRK_API}/orders.php?action=my_orders`);
+        const data = await res.json();
+        if (data.status === 'login') { window.location.href = 'login.html'; return; }
+        const orders = data.orders || [];
+        const search = raw.replace('ORD-','').replace('#','').toUpperCase();
+        const order = orders.find(o => String(o.id).slice(-8).toUpperCase() === search || String(o.id) === raw);
+        if (!order) {
+            result.innerHTML = `<div class="trk-state" style="margin-bottom:24px"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#ffb3b3" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><h3>Order Not Found</h3><p>No order matching <strong>${esc(raw)}</strong> was found.</p></div>`;
+        } else {
+            /* Fetch detail for items */
+            let items = order.items || [];
+            try {
+                const dr = await fetch(`${TRK_API}/orders.php?action=detail&id=${order.id}`);
+                const dd = await dr.json();
+                if (dd.status === 'success') items = dd.items || [];
+            } catch {}
+            result.innerHTML = `<div class="trk-breadcrumb"><a href="tracking.html"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg> All Orders</a><span>›</span><span>Order #${esc(String(order.id).slice(-8).toUpperCase())}</span></div>` + renderDetail(order, items);
+        }
+    } catch {
+        result.innerHTML = `<div class="trk-state" style="margin-bottom:24px"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#ffb3b3" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg><h3>Connection Error</h3><p>Make sure XAMPP is running.</p></div>`;
+    }
+}
+
+/* ── Load all orders list ── */
+async function loadOrdersList() {
+    const wrap = document.getElementById('trk-orders-wrap');
+    const user = trkUser();
+    if (!user) {
+        wrap.innerHTML = `<div class="trk-state"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><h3>Please log in</h3><p>Sign in to see your order history.</p><a href="login.html" class="trk-btn trk-btn-primary" style="display:inline-flex;margin:0 auto;">Login</a></div>`;
+        return;
+    }
+    try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
+        const res  = await fetch(`${TRK_API}/orders.php?action=my_orders`, { signal: controller.signal });
+        clearTimeout(timeout);
+        const data = await res.json();
+        if (data.status === 'login') { window.location.href = 'login.html'; return; }
+        const orders = data.orders || [];
+        if (!orders.length) {
+            wrap.innerHTML = `<div class="trk-list-hd"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6CB023" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg><span class="trk-list-ttl">My Orders</span></div><div class="trk-state"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><h3>No orders yet</h3><p>Place your first order and track it here.</p><a href="products.html" class="trk-btn trk-btn-primary" style="display:inline-flex;margin:0 auto;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>Browse Products</a></div>`;
+            return;
+        }
+        wrap.innerHTML = `
+        <div class="trk-list-hd">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6CB023" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            <span class="trk-list-ttl">My Orders (${orders.length})</span>
+        </div>
+        <div class="trk-rows">
+            ${orders.map(o => `
+            <div class="trk-row">
+                <div>
+                    <div class="trk-row-num">#${esc(String(o.id).slice(-8).toUpperCase())}</div>
+                    <div class="trk-row-date">${fmt(o.created_at)}</div>
+                </div>
+                <span class="trk-row-amt">&#2547;${parseFloat(o.total_amount).toFixed(2)}</span>
+                ${statusBadge(o.status)}
+                <button class="trk-btn trk-btn-primary" onclick="quickTrack('${esc(String(o.id).slice(-8).toUpperCase())}')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    Track
+                </button>
+            </div>`).join('')}
+        </div>`;
+    } catch (e) {
+        const msg = e.name === 'AbortError' ? 'Request timed out. Make sure XAMPP is running.' : 'Failed to load orders. Make sure XAMPP is running.';
+        wrap.innerHTML = `<div class="trk-state"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#ffb3b3" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3 style="color:#c62828;">Could Not Load Orders</h3><p>${msg}</p><button class="trk-btn trk-btn-primary" onclick="loadOrdersList()" style="margin:0 auto;">Retry</button></div>`;
+    }
+}
+
+/* ── Quick track from list ── */
+function quickTrack(shortId) {
+    const input = document.getElementById('trk-input');
+    if (input) input.value = shortId;
+    searchOrder();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Handle ?placed= and ?order_id= from checkout ── */
+document.addEventListener('DOMContentLoaded', function() {
+    const params  = new URLSearchParams(window.location.search);
+    const placed  = params.get('placed');
+    const orderId = params.get('order_id');
+
+    if (placed && orderId) {
+        const shortId = String(orderId).slice(-8).toUpperCase();
+        document.getElementById('trk-result').innerHTML = `
+        <div class="trk-success-banner">
+            <div class="trk-success-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div>
+                <h4>&#127881; Order placed successfully!</h4>
+                <p>Your Order ID is <strong>#${esc(shortId)}</strong>. We'll confirm it shortly — track it below.</p>
+            </div>
+        </div>`;
+        const input = document.getElementById('trk-input');
+        if (input) { input.value = shortId; searchOrder(); }
+    }
+
+    loadOrdersList();
+});
+</script>
+<script>
+// ── Category menu toggle ─────────────────────────────────────────────────
+function toggleCatMenu(btn) {
+    const d = document.getElementById('cats-dropdown');
+    if (d) d.classList.toggle('open');
+    btn.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-cats-wrap') && !e.target.closest('.header-cats')) {
+        const d = document.getElementById('cats-dropdown');
+        const b = document.getElementById('cats-toggle-btn');
+        if (d) d.classList.remove('open');
+        if (b) b.classList.remove('open');
+    }
+});
+
+// ── Account dropdown toggle ──────────────────────────────────────────────
+function toggleAccountDropdown(e) {
+    e.preventDefault();
+    const dd = document.getElementById('account-dropdown');
+    if (dd) dd.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('account-dropdown-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+        const dd = document.getElementById('account-dropdown');
+        if (dd) dd.classList.remove('open');
+    }
+}, true);
+
+// ── Update header for logged-in user ────────────────────────────────────
+(function() {
+    try {
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user) return;
+        const dest  = user.role === 'admin' ? 'admin/index.html' : 'user/profile.html';
+        const label = document.getElementById('account-label');
+        const link  = document.getElementById('header-account-link');
+        const dd    = document.getElementById('account-dropdown');
+        const ddw   = document.getElementById('account-dropdown-wrap');
+
+        // Show user's first name on the icon
+        if (label) label.textContent = user.name.split(' ')[0];
+
+        // Replace the dropdown with a logged-in menu
+        if (ddw) {
+            // Remove toggle behaviour — clicking goes straight to profile
+            if (link) {
+                link.href = dest;
+                link.onclick = null;
+            }
+            // Replace dropdown contents with profile + logout
+            if (dd) {
+                dd.innerHTML =
+                    '<a href="' + dest + '" class="account-dropdown-item">' +
+                    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+                    'My Profile</a>' +
+                    '<a href="tracking.html" class="account-dropdown-item">' +
+                    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>' +
+                    'My Orders</a>' +
+                    '<a href="#" onclick="doLogout()" class="account-dropdown-item" style="color:#c62828;">' +
+                    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>' +
+                    'Logout</a>';
+            }
+        }
+    } catch(e) {}
+})();
+
+async function doLogout() {
+    try { await fetch('api/logout.php'); } catch(e) {}
+    localStorage.removeItem('user');
+    window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>
