@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - FreshHut</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div class="top-bar-inner">
+        <div class="top-bar-left"></div>
+        <div class="top-bar-center">
+            Welcome to our Organic store <strong>FreshHut!</strong>
+        </div>
+
+    </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="logo fm-logo">
+            <span class="fm-logo-mark" aria-hidden="true">
+                <svg viewBox="0 0 40 40" width="38" height="38"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#g1)"/><path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/><path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+            <div class="logo-text">
+                <span class="logo-name">FreshHut</span>
+                <span class="logo-tagline">Farm to Your Door</span>
+            </div>
+        </a>
+        <div class="header-search">
+            <div class="search-box">
+                <input type="text" id="srch" placeholder="Search for products, categories...">
+                <button onclick="window.location.href='products.html'" class="search-submit-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Search
+                </button>
+            </div>
+        </div>
+        <div class="header-icons">
+            <div class="hicon-dropdown" id="account-dropdown-wrap">
+                <a href="#" class="hicon" id="header-account-link" onclick="toggleAccountDropdown(event)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="hicon-label" id="account-label">Account</span>
+                </a>
+                <div class="account-dropdown" id="account-dropdown">
+                    <a href="login.html" class="account-dropdown-item">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Login
+                    </a>
+                    <a href="register.html" class="account-dropdown-item">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Register
+                    </a>
+                </div>
+            </div>
+            <a href="cart.html" class="hicon hicon-cart" title="Shopping Cart">
+                <div class="cart-wrap-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                    <span class="cart-count-badge" id="cart-count">0</span>
+                </div>
+                <span class="hicon-label">My Cart</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- NAVIGATION -->
+<nav class="main-nav">
+    <div class="nav-inner">
+        <div class="nav-cats-wrap header-cats">
+            <button class="nav-cats-toggle" id="cats-toggle-btn" onclick="toggleCatMenu(this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                All Categories
+                <svg class="cat-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cats-dropdown" id="cats-dropdown">
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e8f5e9;"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=40&h=40&fit=crop" alt="Vegetables"></span>Vegetables</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fff3e0;"><img src="https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=40&h=40&fit=crop" alt="Fruits"></span>Fruits</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e3f2fd;"><img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=40&h=40&fit=crop" alt="Dairy"></span>Dairy &amp; Eggs</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fce4ec;"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=40&h=40&fit=crop" alt="Bakery"></span>Breads &amp; Bakery</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#f3e5f5;"><img src="uploads/products/Bevarage.jpeg" 
+                alt="Beverages"></span>Beverages</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fff8e1;"><img src="https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=40&h=40&fit=crop" alt="Snacks"></span>Snacks &amp; Chips</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fce4ec;"><img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=40&h=40&fit=crop" alt="Meats"></span>Meats</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e0f2f1;"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=40&h=40&fit=crop" alt="Health"></span>Health &amp; Organic</a>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="products.html" class="nav-link">Products</a>
+            <a href="about.html" class="nav-link nav-link-active">About</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-promo-text">
+            Get 10% off with code
+            <span class="nav-promo-badge">FRESH10</span>
+        </div>
+    </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+    <div class="breadcrumb-inner">
+        <a href="index.html">Home</a>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>About Us</span>
+    </div>
+</div>
+
+<!-- HERO -->
+<section class="about-hero">
+    <div class="about-hero-overlay"></div>
+    <div class="about-hero-inner">
+        <span class="about-hero-tag">OUR STORY</span>
+        <h1 class="about-hero-title">Do You Want To Know Us?</h1>
+        <p class="about-hero-sub">We are FreshHut — bringing farm-fresh produce and organic goodness directly to your doorstep in Dhaka.</p>
+    </div>
+</section>
+
+<!-- ABOUT INTRO -->
+<section class="about-intro">
+    <div class="about-intro-inner">
+        <div class="about-intro-img-wrap">
+            <img src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&h=560&fit=crop&q=85" alt="FreshHut Farm">
+            </div>
+        <div class="about-intro-text">
+            <p class="about-section-tag">WHO WE ARE</p>
+            <h2>Your Trusted Farm-to-Door Grocery Partner</h2>
+            <p>At FreshHut, we believe everyone deserves access to fresh, healthy, and affordable groceries. We partner directly with local farms across Bangladesh to bring you the finest seasonal produce, dairy, and organic goods — delivered fast to your doorstep.</p>
+            <p>No middlemen. No compromises. Just honest food from honest farmers, curated with care and delivered with a smile.</p>
+
+            </div>
+            </div>
+    </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why-section">
+    <div class="why-inner">
+        <div class="about-section-header">
+            <p class="about-section-tag">OUR PROMISE</p>
+            <h2>Why You Choose Us?</h2>
+            <p>We go beyond just groceries. Here's what makes FreshHut the best choice for your family's daily needs.</p>
+        </div>
+        <div class="why-grid">
+
+            <div class="why-card">
+                <span class="why-card-num">01</span>
+                <div class="why-card-icon">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                        <path d="M8 12l2.5 2.5L16 9"/>
+                        <path d="M12 6v1M12 17v1M6 12h1M17 12h1"/>
+                    </svg>
+                </div>
+                <div class="why-card-divider"></div>
+                <h3>100% Organic Products</h3>
+                <p>Every item on our shelves is sourced directly from certified organic farms. No pesticides, no artificial preservatives — just pure, natural goodness for your family.</p>
+            </div>
+
+            <div class="why-card">
+                <span class="why-card-num">02</span>
+                <div class="why-card-icon">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M14.5 9a2.5 2.5 0 00-5 0c0 1.5 1 2.5 2.5 3.5 1.5-1 2.5-2 2.5-3.5z"/>
+                        <path d="M12 15v2"/>
+                    </svg>
+                </div>
+                <div class="why-card-divider"></div>
+                <h3>Best Price Guarantee</h3>
+                <p>We cut out the middlemen and work directly with farmers so you always get the freshest produce at the most competitive prices in Dhaka — guaranteed.</p>
+            </div>
+
+            <div class="why-card">
+                <span class="why-card-num">03</span>
+                <div class="why-card-icon">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="1" y="3" width="15" height="13" rx="1"/>
+                        <path d="M16 8h4l3 4v4h-7V8z"/>
+                        <circle cx="5.5" cy="18.5" r="2.5"/>
+                        <circle cx="18.5" cy="18.5" r="2.5"/>
+                    </svg>
+                </div>
+                <div class="why-card-divider"></div>
+                <h3>Fast & Reliable Delivery</h3>
+                <p>Order before noon and get same-day delivery anywhere in Dhaka. Our refrigerated fleet keeps everything fresh from our warehouse to your door.</p>
+            </div>
+
+            <div class="why-card">
+                <span class="why-card-num">04</span>
+                <div class="why-card-icon">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>
+                    </svg>
+                </div>
+                <div class="why-card-divider"></div>
+                <h3>Freshness Guaranteed</h3>
+                <p>Not happy with your order? We offer a full freshness guarantee. If anything isn't up to standard, we'll replace it or refund you — no questions asked.</p>
+            </div>
+
+            <div class="why-card">
+                <span class="why-card-num">05</span>
+                <div class="why-card-icon">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <div class="why-card-divider"></div>
+                <h3>Safe &amp; Hygienic Handling</h3>
+                <p>All our produce goes through strict quality checks and is handled in hygienic, temperature-controlled environments so it arrives safe, clean, and ready to eat.</p>
+            </div>
+
+            </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="footer-top">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <span class="fm-logo-mark" aria-hidden="true" style="border:2px solid #1b5e20;border-radius:50%;display:inline-flex;">
+                    <svg viewBox="0 0 40 40" width="38" height="38"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#g1)"/><path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/><path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <div class="logo-text">
+                    <span class="logo-name" style="color:#fff;">FreshHut</span>
+                    <span class="logo-tagline" style="color:rgba(255,255,255,0.65);">Farm to Your Door</span>
+                </div>
+            </div>
+            <p>Your trusted online grocery store delivering the freshest produce from farms directly to your doorstep in Dhaka.</p>
+            <div class="footer-contacts">
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.17 10.4a19.79 19.79 0 01-3.07-8.68A2 2 0 012.08 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+                    +880 1700 000000
+                </div>
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    support@freshhut.com.bd
+                </div>
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Delivery: Dhaka, Bangladesh
+                </div>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="footer-social-btn" title="Facebook">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                </a>
+                <a href="#" class="footer-social-btn" title="Instagram">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="#" class="footer-social-btn" title="LinkedIn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="footer-right-col">
+            <div class="footer-deliver-col">
+                <h5>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="vertical-align:-2px;margin-right:6px;"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    We Deliver To
+                </h5>
+                <div class="footer-deliver-row">
+                    <span>Dhaka City</span>
+                    <span>Gulshan &amp; Banani</span>
+                    <span>Mirpur</span>
+                    <span>Uttara</span>
+                    <span>Dhanmondi</span>
+                    <span>Mohammadpur</span>
+                    <span>Wari</span>
+                    <span>Motijheel</span>
+                </div>
+            </div>
+            <div class="footer-legal-col">
+                <h5>Legal</h5>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-policy-bar">
+        <div class="footer-policy-inner">
+            <p>&copy; 2025 <strong>FreshHut</strong>. All rights reserved. Fresh groceries delivered to your door.</p>
+        </div>
+    </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="js/product-img.js"></script>
+<script src="js/main.js"></script>
+<script>
+function toggleCatMenu(btn) {
+    var d = document.getElementById('cats-dropdown');
+    if (d) d.classList.toggle('open');
+    btn.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-cats-wrap') && !e.target.closest('.header-cats')) {
+        var d = document.getElementById('cats-dropdown');
+        var b = document.getElementById('cats-toggle-btn');
+        if (d) d.classList.remove('open');
+        if (b) b.classList.remove('open');
+    }
+});
+function toggleAccountDropdown(e) {
+    e.preventDefault();
+    var dd = document.getElementById('account-dropdown');
+    if (dd) dd.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+    var wrap = document.getElementById('account-dropdown-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+        var dd = document.getElementById('account-dropdown');
+        if (dd) dd.classList.remove('open');
+    }
+}, true);
+(function() {
+    try {
+        var user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user) return;
+        var dest  = user.role === 'admin' ? 'admin/index.html' : 'user/profile.html';
+        var label = document.getElementById('account-label');
+        var link  = document.getElementById('header-account-link');
+        var dd    = document.getElementById('account-dropdown');
+        if (label) label.textContent = user.name.split(' ')[0];
+        if (link)  { link.href = dest; link.onclick = null; }
+        if (dd) dd.innerHTML =
+            '<a href="' + dest + '" class="account-dropdown-item">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Profile</a>' +
+            '<a href="tracking.html" class="account-dropdown-item">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>My Orders</a>' +
+            '<a href="#" onclick="doLogout(event)" class="account-dropdown-item" style="color:#c62828;">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>';
+    } catch(e) {}
+})();
+function doLogout(e) {
+    if (e) e.preventDefault();
+    fetch('api/logout.php').catch(function(){});
+    localStorage.removeItem('user');
+    window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

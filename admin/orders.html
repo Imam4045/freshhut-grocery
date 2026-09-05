@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders - FreshHut Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+<div class="adm-layout">
+
+    <aside class="adm-sidebar">
+        <div class="adm-brand">
+            <div class="adm-brand-icon">
+                <svg viewBox="0 0 40 40" width="38" height="38"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#g1)"/><path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/><path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="adm-brand-txt">
+                <div class="adm-brand-name">FreshHut</div>
+                <div class="adm-brand-sub">Admin Panel</div>
+            </div>
+        </div>
+        <nav class="adm-nav">
+            <div class="adm-nav-section-label">Main</div>
+            <a href="index.html" class="adm-nav-link">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Dashboard
+            </a>
+            <div class="adm-nav-section-label">Manage</div>
+            <a href="products.html" class="adm-nav-link">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+                Products
+            </a>
+            <a href="orders.html" class="adm-nav-link active">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                Orders
+            </a>
+            <a href="users.html" class="adm-nav-link">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                Users
+            </a>
+            <div class="adm-nav-divider"></div>
+            <a href="../index.html" class="adm-nav-link">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                View Store
+            </a>
+            <a href="#" class="adm-nav-link nav-danger" onclick="adminLogout()">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </a>
+        </nav>
+        <div class="adm-sidebar-footer">
+            <div class="adm-footer-user">
+                <div class="adm-footer-avatar" id="adm-avatar">A</div>
+                <div>
+                    <div class="adm-footer-name" id="adm-footer-name">Admin</div>
+                    <div class="adm-footer-role">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="adm-main">
+        <div class="adm-topbar">
+            <div class="adm-topbar-title">Manage Orders</div>
+
+        </div>
+
+        <div class="adm-content">
+            <!-- Quick Stats -->
+            <div class="adm-stat-grid" id="order-stats">
+                <div class="adm-loading" style="grid-column:1/-1;"><div class="adm-spinner"></div></div>
+            </div>
+
+            <div class="adm-table-card">
+                <div class="adm-table-hd">
+                    <div class="adm-table-ttl">All Orders</div>
+                    <div class="adm-table-actions">
+                        <input type="text" class="adm-search" id="order-search" placeholder="Search customer or order ID..." oninput="filterOrders()" style="min-width:200px;">
+                        <select class="adm-select" id="status-filter" onchange="filterOrders()">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Out for Delivery">Out for Delivery</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="orders-table-wrap">
+                    <div class="adm-loading"><div class="adm-spinner"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Detail Modal -->
+<div class="adm-modal-overlay" id="order-modal">
+    <div class="adm-modal" style="max-width:640px;">
+        <div class="adm-modal-hd">
+            <div class="adm-modal-ttl" id="order-modal-ttl">Order Details</div>
+            <button class="adm-modal-close" onclick="closeOrderModal()">&times;</button>
+        </div>
+        <div class="adm-modal-body" id="order-modal-body"></div>
+        <div class="adm-modal-footer">
+            <div style="flex:1;display:flex;align-items:center;gap:10px;">
+                <label style="font-size:13px;font-weight:800;color:#555;">Update Status:</label>
+                <select class="adm-select" id="modal-status-select">
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Out for Delivery">Out for Delivery</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+            <button class="adm-btn adm-btn-primary" onclick="updateOrderStatus()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                Save Status
+            </button>
+            <button class="adm-btn adm-btn-ghost" onclick="closeOrderModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="../js/product-img.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+allOrders = [];
+let currentOrderId = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user')||'null');
+    if (user) {
+        const n = document.getElementById('adm-footer-name');
+        const a = document.getElementById('adm-avatar');
+        if (n) n.textContent = user.name || 'Admin';
+        if (a && user.name) a.textContent = user.name.charAt(0).toUpperCase();
+    }
+    if (typeof loadAllOrders === 'function') {
+        loadAllOrders();
+    } else {
+        document.getElementById('order-stats').innerHTML = '<div style="grid-column:1/-1;padding:20px;color:#c62828;font-weight:700;">Script error — reload the page.</div>';
+        document.getElementById('orders-table-wrap').innerHTML = '<div style="padding:20px;color:#c62828;font-weight:700;">Script error — please reload.</div>';
+    }
+});
+
+const STATUS_META = {
+    'Pending':{'cls':'ab-orange','dot':'#f57c00'},
+    'Confirmed':{'cls':'ab-blue','dot':'#1565c0'},
+    'Processing':{'cls':'ab-purple','dot':'#6a1b9a'},
+    'Out for Delivery':{'cls':'ab-green','dot':'#4caf50'},
+    'Delivered':{'cls':'ab-green','dot':'#2e7d32'},
+    'Cancelled':{'cls':'ab-red','dot':'#c62828'},
+};
+function statusBadge(status) {
+    const m = STATUS_META[status] || {cls:'ab-gray',dot:'#aaa'};
+    return `<span class="adm-badge ${m.cls}"><span style="width:6px;height:6px;border-radius:50%;background:${m.dot};display:inline-block;"></span>${escHtml(status)}</span>`;
+}
+function escHtml(str) { const d=document.createElement('div');d.textContent=String(str||'');return d.innerHTML; }
+function formatDate(ds){if(!ds)return'—';return new Date(ds).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});}
+function showToast2(msg,type='success'){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className=`toast ${type} show`;setTimeout(()=>{t.className='toast';},3200);}
+
+async function loadAllOrders() {
+    try {
+        const res  = await fetch('../api/orders.php?action=all_orders');
+        const data = await res.json();
+        allOrders  = data.orders || [];
+
+        // Stats
+        const pending   = allOrders.filter(o=>o.status==='Pending').length;
+        const delivered = allOrders.filter(o=>o.status==='Delivered').length;
+        const cancelled = allOrders.filter(o=>o.status==='Cancelled').length;
+        const revenue   = allOrders.filter(o=>o.status==='Delivered').reduce((s,o)=>s+parseFloat(o.total_amount||0),0);
+
+        document.getElementById('order-stats').innerHTML = `
+            <div class="adm-stat-card"><div class="adm-stat-icon si-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/></svg></div>
+            <div class="adm-stat-info"><span class="adm-stat-num">${allOrders.length}</span><div class="adm-stat-lbl">Total Orders</div></div></div>
+            <div class="adm-stat-card"><div class="adm-stat-icon si-orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="adm-stat-info"><span class="adm-stat-num">${pending}</span><div class="adm-stat-lbl">Pending</div></div></div>
+            <div class="adm-stat-card"><div class="adm-stat-icon si-blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="adm-stat-info"><span class="adm-stat-num">${delivered}</span><div class="adm-stat-lbl">Delivered</div></div></div>
+            <div class="adm-stat-card"><div class="adm-stat-icon si-purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <div class="adm-stat-info"><span class="adm-stat-num">&#2547;${revenue.toFixed(0)}</span><div class="adm-stat-lbl">Revenue</div></div></div>`;
+
+        renderOrders(allOrders);
+    } catch(e) {
+        console.error('loadAllOrders error:', e);
+        document.getElementById('order-stats').innerHTML = '<div style="grid-column:1/-1;padding:18px;color:#c62828;font-weight:700;">Could not connect to server. Make sure XAMPP is running.</div>';
+        document.getElementById('orders-table-wrap').innerHTML = '<div style="padding:24px;color:#c62828;font-weight:700;">Failed to load orders. Check that XAMPP MySQL is running and you are logged in as admin.</div>';
+    }
+}
+
+function filterOrders() {
+    const search = (document.getElementById('order-search')?.value || '').toLowerCase();
+    const status = document.getElementById('status-filter')?.value || '';
+    const filtered = allOrders.filter(o => {
+        const matchSearch = !search ||
+            (o.customer||'').toLowerCase().includes(search) ||
+            String(o.id).toLowerCase().includes(search);
+        const matchStatus = !status || o.status === status;
+        return matchSearch && matchStatus;
+    });
+    renderOrders(filtered);
+}
+
+function renderOrders(orders) {
+    const wrap = document.getElementById('orders-table-wrap');
+    if (!orders.length) {
+        wrap.innerHTML = `<div class="adm-empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#e0e0e0" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/></svg><p>No orders match your filter.</p></div>`;
+        return;
+    }
+    wrap.innerHTML = `<div style="overflow-x:auto;"><table class="adm-tbl">
+        <thead><tr>
+            <th>Order ID</th><th>Customer</th><th>Total</th>
+            <th>Payment</th><th>Status</th><th>Date</th><th>Actions</th>
+        </tr></thead>
+        <tbody>${orders.map(o => `
+        <tr>
+            <td><strong style="font-family:'Josefin Sans',sans-serif;font-size:13px;">#${escHtml(String(o.id).slice(-8).toUpperCase())}</strong></td>
+            <td>
+                <div style="font-weight:700;color:#1c1c1e;">${escHtml(o.customer||'—')}</div>
+                <div style="font-size:11.5px;color:#888;">${escHtml(o.customer_email||'')}</div>
+            </td>
+            <td><strong style="color:#6CB023;">&#2547;${parseFloat(o.total_amount).toFixed(2)}</strong></td>
+            <td style="color:#666;">${escHtml(o.payment_method||'—')}</td>
+            <td>${statusBadge(o.status)}</td>
+            <td style="color:#888;font-size:12.5px;">${formatDate(o.created_at)}</td>
+            <td>
+                <div style="display:flex;gap:7px;align-items:center;">
+                    <button class="adm-btn adm-btn-primary adm-btn-sm" onclick="openOrderModal('${escHtml(String(o.id))}')">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        View
+                    </button>
+                </div>
+            </td>
+        </tr>`).join('')}
+        </tbody></table></div>`;
+}
+
+function openOrderModal(orderId) {
+    currentOrderId = orderId;
+    const order = allOrders.find(o => String(o.id) === String(orderId));
+    if (!order) return;
+
+    document.getElementById('order-modal-ttl').textContent = `Order #${String(order.id).slice(-8).toUpperCase()}`;
+    document.getElementById('modal-status-select').value = order.status;
+
+    const PRODUCT_IMGS = {
+        vegetables:'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=60&h=60&fit=crop',
+        fruits:'https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=60&h=60&fit=crop',
+        dairy:'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=60&h=60&fit=crop',
+        bakery:'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=60&h=60&fit=crop',
+        beverages:'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=60&h=60&fit=crop',
+        snacks:'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=60&h=60&fit=crop',
+    };
+    const DEF = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=60&h=60&fit=crop';
+
+    document.getElementById('order-modal-body').innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+            <div style="background:#fafcf8;border-radius:10px;padding:14px;">
+                <div style="font-size:11px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Customer</div>
+                <div style="font-weight:800;color:#1c1c1e;">${escHtml(order.customer||'—')}</div>
+                <div style="font-size:12.5px;color:#888;margin-top:2px;">${escHtml(order.customer_email||'')}</div>
+            </div>
+            <div style="background:#fafcf8;border-radius:10px;padding:14px;">
+                <div style="font-size:11px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Payment</div>
+                <div style="font-weight:800;color:#1c1c1e;">${escHtml(order.payment_method||'—')}</div>
+                <div style="font-size:12.5px;color:#888;margin-top:2px;">${formatDate(order.created_at)}</div>
+            </div>
+            <div style="background:#fafcf8;border-radius:10px;padding:14px;grid-column:1/-1;">
+                <div style="font-size:11px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Delivery Address</div>
+                <div style="font-weight:700;color:#333;">${escHtml(order.delivery_address||'—')}</div>
+            </div>
+        </div>
+        ${order.items && order.items.length ? `
+        <div style="font-size:13px;font-weight:800;color:#555;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;">Order Items</div>
+        <div style="border:1.5px solid #f0f4f0;border-radius:12px;overflow:hidden;">
+            ${order.items.map(item => {
+                const img = item.image && item.image !== 'default.jpg'
+                    ? `../uploads/products/${item.image}`
+                    : PROD_IMG.byName(item.product_name || '', item.category || '', 60, 60);
+                return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #f8f8f8;">
+                    <img src="${img}" alt="${escHtml(item.product_name||'')}" style="width:44px;height:44px;border-radius:8px;object-fit:cover;" onerror="this.src='${DEF}'">
+                    <div style="flex:1;">
+                        <div style="font-weight:700;color:#1c1c1e;">${escHtml(item.product_name||'Product')}</div>
+                        <div style="font-size:12.5px;color:#888;">Qty: ${item.quantity} &times; &#2547;${parseFloat(item.price).toFixed(2)}</div>
+                    </div>
+                    <div style="font-weight:800;color:#6CB023;">&#2547;${(item.quantity * item.price).toFixed(2)}</div>
+                </div>`;
+            }).join('')}
+            <div style="display:flex;justify-content:space-between;padding:14px 16px;background:#fafcf8;">
+                <span style="font-weight:800;color:#555;">Total Amount</span>
+                <span style="font-weight:800;color:#6CB023;font-size:16px;">&#2547;${parseFloat(order.total_amount).toFixed(2)}</span>
+            </div>
+        </div>` : ''}`;
+
+    document.getElementById('order-modal').classList.add('open');
+}
+
+function closeOrderModal() {
+    document.getElementById('order-modal').classList.remove('open');
+    currentOrderId = null;
+}
+
+async function updateOrderStatus() {
+    if (!currentOrderId) return;
+    const newStatus = document.getElementById('modal-status-select').value;
+    try {
+        const res  = await fetch('../api/orders.php?action=update_status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ order_id: currentOrderId, status: newStatus })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+            showToast2('Order status updated');
+            const idx = allOrders.findIndex(o => String(o.id) === String(currentOrderId));
+            if (idx > -1) allOrders[idx].status = newStatus;
+            filterOrders();
+            closeOrderModal();
+        } else {
+            showToast2(data.message || 'Update failed', 'error');
+        }
+    } catch {
+        showToast2('Connection error', 'error');
+    }
+}
+
+document.getElementById('order-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('order-modal')) closeOrderModal();
+});
+</script>
+</body>
+</html>

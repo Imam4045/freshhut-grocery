@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - FreshHut</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset + Base ─────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+        body { font-family: 'Nunito', sans-serif; background: #f3f5f2; color: #1c1c1e; line-height: 1.55; }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; max-width: 100%; }
+        button { font-family: inherit; }
+
+        /* ── Layout ───────────────────────────────────── */
+        .up-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar (fixed) ─────────────────────────── */
+        .up-sidebar {
+            position: fixed;
+            left: 0; top: 0;
+            width: 260px;
+            height: 100vh;
+            background: #fff;
+            border-right: 1.5px solid #eaf0ea;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            z-index: 200;
+            box-shadow: 3px 0 16px rgba(0,0,0,.06);
+        }
+
+        /* Brand */
+        .up-brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 22px 22px 18px;
+            border-bottom: 1.5px solid #f0f4f0;
+        }
+        .up-brand-icon {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: transparent;
+            overflow: hidden; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .up-brand-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .up-brand-name {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 19px; font-weight: 700; color: #6CB023;
+            display: block; line-height: 1.1;
+        }
+        .up-brand-sub {
+            font-size: 10px; color: #bbb; font-weight: 700;
+            letter-spacing: .7px; text-transform: uppercase;
+        }
+
+        /* User identity */
+        .up-user-block {
+            padding: 18px 22px 16px;
+            border-bottom: 1.5px solid #f0f4f0;
+        }
+        .up-avatar-row {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+        .up-avatar {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, #6CB023, #8ed62e);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 20px; font-weight: 700; color: #fff;
+            flex-shrink: 0;
+        }
+        .up-user-name {
+            font-size: 15px; font-weight: 800; color: #1c1c1e;
+            display: block; margin-bottom: 4px;
+        }
+        .up-user-badge {
+            display: inline-block;
+            background: #f0f7e3;
+            color: #6CB023;
+            font-size: 10.5px; font-weight: 800;
+            padding: 2px 9px; border-radius: 20px;
+            letter-spacing: .3px;
+        }
+
+        /* Nav */
+        .up-nav { padding: 14px 12px; flex: 1; }
+        .up-nav-item {
+            display: flex; align-items: center; gap: 11px;
+            padding: 11px 13px; border-radius: 10px;
+            font-size: 14px; font-weight: 700; color: #555;
+            cursor: pointer; transition: all .2s ease;
+            margin-bottom: 2px; border: none; background: none;
+            width: 100%; text-align: left;
+        }
+        .up-nav-item svg { flex-shrink: 0; opacity: .55; transition: opacity .2s; }
+        .up-nav-item:hover {
+            background: #f0f7e3; color: #6CB023;
+        }
+        .up-nav-item:hover svg { opacity: 1; }
+        .up-nav-item.active {
+            background: #6CB023; color: #fff;
+        }
+        .up-nav-item.active svg { opacity: 1; filter: brightness(10); }
+        .up-nav-sep { height: 1px; background: #f0f4f0; margin: 8px 2px; }
+        .up-nav-item.danger:hover { background: #ffebee; color: #c62828; }
+        .up-nav-item.danger:hover svg { opacity: 1; }
+        .up-nav-badge {
+            margin-left: auto;
+            background: #6CB023; color: #fff;
+            font-size: 11px; font-weight: 800;
+            min-width: 20px; height: 20px; border-radius: 20px;
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0 5px; line-height: 1;
+        }
+        .up-nav-item.active .up-nav-badge { background: rgba(255,255,255,0.3); }
+
+        /* Sidebar footer */
+        .up-sidebar-footer {
+            padding: 14px 22px;
+            border-top: 1.5px solid #f0f4f0;
+        }
+        .up-back-link {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; color: #aaa; font-weight: 700;
+            transition: color .18s ease;
+        }
+        .up-back-link:hover { color: #6CB023; }
+        .up-back-link svg { transition: transform .2s ease; }
+        .up-back-link:hover svg { transform: translateX(-2px); }
+
+        /* ── Main content ─────────────────────────────── */
+        .up-main {
+            margin-left: 260px;
+            flex: 1;
+            padding: 32px 36px;
+            min-width: 0;
+        }
+
+        /* Panel header */
+        .up-panel-hd {
+            margin-bottom: 24px;
+        }
+        .up-panel-title {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 24px; font-weight: 700;
+            color: #1c1c1e; margin-bottom: 4px;
+        }
+        .up-panel-sub { font-size: 13.5px; color: #999; }
+
+        /* Tab panels */
+        .up-tab-panel { display: none; }
+        .up-tab-panel.active { display: block; }
+
+        /* ── Profile Form Card ─────────────────────────── */
+        .up-card {
+            background: #fff;
+            border-radius: 18px;
+            border: 1.5px solid #eaf0ea;
+            box-shadow: 0 2px 14px rgba(0,0,0,.05);
+            overflow: hidden;
+        }
+        .up-card-hd {
+            padding: 18px 26px;
+            border-bottom: 1.5px solid #f3f6f3;
+            background: #fafcf8;
+        }
+        .up-card-ttl {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 15px; font-weight: 700; color: #333;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .up-card-ttl svg { color: #6CB023; }
+        .up-card-body { padding: 26px; }
+
+        .up-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .up-form-group { display: flex; flex-direction: column; gap: 6px; }
+        .up-form-group.full { grid-column: 1/-1; }
+        .up-form-group label {
+            font-size: 12px; font-weight: 800; color: #555;
+            text-transform: uppercase; letter-spacing: .5px;
+        }
+        .up-form-group input,
+        .up-form-group textarea {
+            padding: 11px 14px;
+            border: 1.5px solid #e3eae3; border-radius: 10px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px; color: #1c1c1e;
+            background: #fafcf8; outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+        .up-form-group input:focus,
+        .up-form-group textarea:focus {
+            border-color: #6CB023;
+            box-shadow: 0 0 0 3px rgba(108,176,35,.12);
+            background: #fff;
+        }
+        .up-form-group input[readonly] {
+            background: #f5f5f5; color: #aaa; cursor: not-allowed;
+        }
+        .up-form-group textarea { resize: vertical; min-height: 82px; }
+        .up-form-hint { font-size: 11.5px; color: #bbb; margin-top: 3px; }
+
+        .up-save-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, #6CB023, #8ed62e);
+            color: #fff; border: none; border-radius: 10px;
+            padding: 11px 26px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px; font-weight: 800; cursor: pointer;
+            transition: all .22s cubic-bezier(.22,.68,0,1.2);
+            box-shadow: 0 4px 14px rgba(108,176,35,.35);
+            margin-top: 20px;
+        }
+        .up-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(108,176,35,.45);
+        }
+        .up-save-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+        /* ── Stats Row ─────────────────────────────────── */
+        .up-stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+        .up-stat-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #eaf0ea;
+            box-shadow: 0 2px 10px rgba(0,0,0,.04);
+            padding: 16px 18px;
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+        .up-stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.09);
+        }
+        .up-stat-lbl {
+            font-size: 11px; font-weight: 800; color: #bbb;
+            text-transform: uppercase; letter-spacing: .6px;
+            margin-bottom: 7px;
+        }
+        .up-stat-val {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 24px; font-weight: 700; color: #1c1c1e;
+        }
+        .up-stat-card:nth-child(1) .up-stat-val { color: #1565c0; }
+        .up-stat-card:nth-child(2) .up-stat-val { color: #6CB023; }
+        .up-stat-card:nth-child(3) .up-stat-val { color: #f57c00; }
+        .up-stat-card:nth-child(4) .up-stat-val { color: #6CB023; font-size: 20px; }
+
+        /* ── Order Cards ───────────────────────────────── */
+        .up-orders-list { display: flex; flex-direction: column; gap: 14px; }
+
+        .up-order-card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1.5px solid #eaf0ea;
+            box-shadow: 0 2px 10px rgba(0,0,0,.04);
+            overflow: hidden;
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+        .up-order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,.09);
+        }
+
+        .up-order-hd {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 20px;
+            background: #fafcf8;
+            border-bottom: 1.5px solid #f0f4f0;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .up-order-id-wrap {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .up-order-icon {
+            width: 36px; height: 36px; border-radius: 9px;
+            background: #f0f7e3;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .up-order-num {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 15px; font-weight: 700; color: #1c1c1e;
+            display: block;
+        }
+        .up-order-date { font-size: 12px; color: #aaa; font-weight: 600; }
+
+        .up-order-meta {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        }
+
+        /* Status badges */
+        .up-status {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 12px; font-weight: 800;
+        }
+        .up-status-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+        }
+        .s-pending   { background: #fff8e1; color: #f57c00; }
+        .s-confirmed { background: #e3f2fd; color: #1565c0; }
+        .s-processing { background: #f3e5f5; color: #6a1b9a; }
+        .s-delivery  { background: #e0f7fa; color: #00838f; }
+        .s-delivered { background: #e8f5e9; color: #2e7d32; }
+        .s-cancelled { background: #ffebee; color: #c62828; }
+
+        /* Order body */
+        .up-order-body { padding: 18px 20px; }
+
+        .up-order-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+            border-bottom: 1.5px solid #f3f6f3;
+        }
+        .up-meta-item { display: flex; flex-direction: column; gap: 3px; }
+        .up-meta-lbl {
+            font-size: 10.5px; font-weight: 800; color: #bbb;
+            text-transform: uppercase; letter-spacing: .5px;
+        }
+        .up-meta-val { font-size: 13.5px; font-weight: 700; color: #333; }
+
+        /* Order items */
+        .up-items-list { display: flex; flex-direction: column; gap: 8px; }
+        .up-item-row {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 13px;
+            background: #fafcf8; border-radius: 10px;
+            transition: background .17s ease;
+        }
+        .up-item-row:hover { background: #f0f7e3; }
+        .up-item-img {
+            width: 42px; height: 42px; border-radius: 8px;
+            object-fit: cover; flex-shrink: 0;
+            border: 1px solid #eaf0ea;
+        }
+        .up-item-info { flex: 1; min-width: 0; }
+        .up-item-name {
+            font-size: 13.5px; font-weight: 800; color: #1c1c1e;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: block;
+        }
+        .up-item-qty { font-size: 12px; color: #aaa; font-weight: 600; }
+        .up-item-price {
+            font-size: 14px; font-weight: 800; color: #6CB023;
+            white-space: nowrap;
+        }
+
+        /* ── Empty / Loading ───────────────────────────── */
+        .up-empty {
+            text-align: center; padding: 70px 20px;
+            background: #fff; border-radius: 18px;
+            border: 1.5px solid #eaf0ea;
+        }
+        .up-empty svg { margin: 0 auto 16px; }
+        .up-empty h3 { font-size: 18px; color: #444; margin-bottom: 8px; }
+        .up-empty p { font-size: 14px; color: #aaa; margin-bottom: 20px; }
+        .up-shop-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, #6CB023, #8ed62e);
+            color: #fff; padding: 11px 26px; border-radius: 10px;
+            font-weight: 800; font-size: 14px;
+            box-shadow: 0 4px 14px rgba(108,176,35,.35);
+            transition: all .22s cubic-bezier(.22,.68,0,1.2);
+        }
+        .up-shop-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(108,176,35,.45); }
+
+        .up-loading {
+            text-align: center; padding: 60px 20px;
+            background: #fff; border-radius: 18px;
+            border: 1.5px solid #eaf0ea;
+        }
+        .up-spinner {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 3px solid #eaf0ea; border-top-color: #6CB023;
+            animation: spin .7s linear infinite;
+            margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Inline Order Progress ─────────────────── */
+        .up-progress-wrap {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1.5px solid #f3f6f3;
+        }
+        .up-progress-label {
+            font-size: 10.5px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: .6px; color: #bbb; margin-bottom: 16px;
+        }
+        .up-progress-steps {
+            display: flex; align-items: flex-start;
+            justify-content: space-between;
+            position: relative;
+        }
+        .up-progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 16px; left: 0; right: 0;
+            height: 3px; background: #eaf0ea; z-index: 0;
+        }
+        .up-progress-fill {
+            position: absolute;
+            top: 16px; left: 0;
+            height: 3px; background: #6CB023;
+            z-index: 1; transition: width .5s ease;
+        }
+        .up-prog-step {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 6px;
+            flex: 1; position: relative; z-index: 2;
+        }
+        .up-prog-dot {
+            width: 33px; height: 33px; border-radius: 50%;
+            background: #f0f4f0; border: 2.5px solid #d8e8d8;
+            display: flex; align-items: center; justify-content: center;
+            transition: all .3s;
+        }
+        .up-prog-step.done .up-prog-dot {
+            background: #6CB023; border-color: #6CB023;
+        }
+        .up-prog-step.active .up-prog-dot {
+            background: #fff; border-color: #6CB023;
+            box-shadow: 0 0 0 4px rgba(108,176,35,.2);
+            animation: prog-ring 1.5s ease-in-out infinite;
+        }
+        @keyframes prog-ring { 0%,100%{box-shadow:0 0 0 4px rgba(108,176,35,.2)} 50%{box-shadow:0 0 0 8px rgba(108,176,35,.07)} }
+        .up-prog-step.done .up-prog-dot svg { stroke: #fff; }
+        .up-prog-step.active .up-prog-dot svg { stroke: #6CB023; }
+        .up-prog-step:not(.done):not(.active) .up-prog-dot svg { stroke: #c8d8c0; }
+        .up-prog-lbl {
+            font-size: 10px; font-weight: 700; text-align: center;
+            color: #bbb; line-height: 1.3; max-width: 62px;
+        }
+        .up-prog-step.done .up-prog-lbl,
+        .up-prog-step.active .up-prog-lbl { color: #3a6e1a; }
+
+        /* ── Success Banner ─────────────────────────── */
+        .up-success-banner {
+            display: flex; align-items: flex-start; gap: 14px;
+            background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
+            border: 1.5px solid #a5d6a7;
+            border-radius: 14px; padding: 18px 22px;
+            margin-bottom: 22px;
+            animation: banner-in .4s cubic-bezier(.22,.68,0,1.2);
+        }
+        @keyframes banner-in { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+        .up-success-banner-icon {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: #6CB023; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .up-success-banner h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 16px; font-weight: 700; color: #1b5e20; margin-bottom: 3px;
+        }
+        .up-success-banner p { font-size: 13px; color: #388e3c; }
+
+        /* ── Toast ─────────────────────────────────────── */
+        .toast {
+            position: fixed; bottom: 24px; right: 24px;
+            background: #1a2e1a; color: #fff; padding: 13px 22px;
+            border-radius: 11px; font-size: 14px; font-weight: 700;
+            box-shadow: 0 8px 28px rgba(0,0,0,.2); z-index: 9999;
+            transform: translateY(20px); opacity: 0;
+            transition: all .3s; pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: #2e7d32; }
+        .toast.error   { background: #c62828; }
+
+        /* ── Responsive ─────────────────────────────────── */
+        @media (max-width: 1100px) {
+            .up-stats-row { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 860px) {
+            .up-sidebar { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1.5px solid #eaf0ea; box-shadow: none; }
+            .up-layout { flex-direction: column; }
+            .up-main { margin-left: 0; padding: 20px 16px; }
+            .up-nav { display: flex; flex-direction: row; padding: 8px 12px; gap: 6px; overflow-x: auto; }
+            .up-nav-item { white-space: nowrap; flex-shrink: 0; margin-bottom: 0; }
+            .up-nav-sep { display: none; }
+        }
+        @media (max-width: 600px) {
+            .up-form-grid { grid-template-columns: 1fr; }
+            .up-order-meta-grid { grid-template-columns: 1fr 1fr; }
+            .up-stats-row { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="up-layout">
+
+    <!-- ── Fixed Sidebar ──────────────────────────── -->
+    <aside class="up-sidebar">
+        <!-- Brand -->
+        <div class="up-brand">
+            <div class="up-brand-icon">
+                <svg viewBox="0 0 40 40" width="38" height="38"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#g1)"/><path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/><path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+                <span class="up-brand-name">FreshHut</span>
+                <span class="up-brand-sub">My Account</span>
+            </div>
+        </div>
+
+        <!-- User -->
+        <div class="up-user-block">
+            <div class="up-avatar-row">
+                <div class="up-avatar" id="up-avatar">U</div>
+                <div>
+                    <span class="up-user-name" id="up-username">Loading...</span>
+                    <span class="up-user-badge">Customer</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nav -->
+        <nav class="up-nav">
+            <button class="up-nav-item active" id="nav-profile" onclick="switchTab('profile', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                My Profile
+            </button>
+            <button class="up-nav-item" id="nav-orders" onclick="switchTab('orders', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                Order History
+                <span class="up-nav-badge" id="nav-orders-badge" style="display:none"></span>
+            </button>
+            <div class="up-nav-sep"></div>
+            <button class="up-nav-item danger" onclick="userLogout()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Sign Out
+            </button>
+        </nav>
+
+        <!-- Footer -->
+        <div class="up-sidebar-footer">
+            <a href="../index.html" class="up-back-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Store
+            </a>
+        </div>
+    </aside>
+
+    <!-- ── Main content ────────────────────────────── -->
+    <main class="up-main">
+
+        <!-- PROFILE TAB -->
+        <div id="tab-profile" class="up-tab-panel active">
+            <div class="up-panel-hd">
+                <div class="up-panel-title">My Profile</div>
+                <p class="up-panel-sub">Update your personal information and delivery address.</p>
+            </div>
+            <div class="up-card">
+                <div class="up-card-hd">
+                    <div class="up-card-ttl">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Personal Information
+                    </div>
+                </div>
+                <div class="up-card-body">
+                    <div class="up-form-grid">
+                        <div class="up-form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="pf-name" placeholder="Your full name">
+                        </div>
+                        <div class="up-form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="pf-email" placeholder="your@email.com" readonly>
+                            <span class="up-form-hint">Email cannot be changed</span>
+                        </div>
+                        <div class="up-form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="pf-phone" placeholder="+880 17XX XXXXXX">
+                        </div>
+                        <div class="up-form-group full">
+                            <label>Delivery Address</label>
+                            <textarea id="pf-address" placeholder="Your full delivery address..."></textarea>
+                        </div>
+                    </div>
+                    <button class="up-save-btn" id="save-btn" onclick="saveProfile()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDERS TAB -->
+        <div id="tab-orders" class="up-tab-panel">
+            <div class="up-panel-hd">
+                <div class="up-panel-title">Order History</div>
+                <p class="up-panel-sub">All your past and current orders in one place.</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="up-stats-row">
+                <div class="up-stat-card">
+                    <div class="up-stat-lbl">Total Orders</div>
+                    <div class="up-stat-val" id="stat-total">—</div>
+                </div>
+                <div class="up-stat-card">
+                    <div class="up-stat-lbl">Delivered</div>
+                    <div class="up-stat-val" id="stat-delivered">—</div>
+                </div>
+                <div class="up-stat-card">
+                    <div class="up-stat-lbl">Pending</div>
+                    <div class="up-stat-val" id="stat-pending">—</div>
+                </div>
+                <div class="up-stat-card">
+                    <div class="up-stat-lbl">Total Spent</div>
+                    <div class="up-stat-val" id="stat-spent">—</div>
+                </div>
+            </div>
+
+            <div id="orders-container">
+                <div class="up-loading">
+                    <div class="up-spinner"></div>
+                    <p style="color:#bbb;font-size:13px;">Loading your orders...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRACKING TAB REMOVED - integrated into order cards -->
+        <div id="tab-tracking" class="up-tab-panel" style="display:none!important">
+            <div class="up-panel-hd">
+                <div class="up-panel-title">Order Tracking</div>
+                <p class="up-panel-sub">Enter your Order ID to track the live status of your delivery.</p>
+            </div>
+
+            <!-- Search box -->
+            <div class="trk-search-wrap">
+                <div class="trk-search-box">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="trk-input" placeholder="e.g. ORD-A1B2C3D4" oninput="this.value=this.value.toUpperCase()">
+                    <button onclick="trackOrder()" id="trk-btn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                        Track
+                    </button>
+                </div>
+                <p class="trk-hint">You can find your Order ID in your <a href="#" onclick="switchTab('orders', document.getElementById('nav-orders'));return false;">Order History</a>.</p>
+            </div>
+
+            <!-- Result area -->
+            <div id="trk-result"></div>
+        </div>
+
+    </main>
+</div>
+
+<style>
+/* ── Tracking Tab Styles ──────────────────────── */
+.trk-search-wrap { margin-bottom: 28px; }
+.trk-search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8faf8;
+    border: 1.5px solid #e0eae0;
+    border-radius: 12px;
+    padding: 10px 16px;
+    transition: border-color .2s;
+}
+.trk-search-box:focus-within { border-color: #6CB023; background: #fff; }
+.trk-search-box input {
+    flex: 1;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #1a2e1a;
+    font-family: 'Josefin Sans', sans-serif;
+    letter-spacing: .5px;
+}
+.trk-search-box input::placeholder { color: #b0b8b0; font-weight: 400; }
+.trk-search-box button {
+    background: #6CB023;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    transition: background .18s;
+    white-space: nowrap;
+}
+.trk-search-box button:hover { background: #5a9a1a; }
+.trk-hint { font-size: 12.5px; color: #9aaa9a; margin-top: 8px; }
+.trk-hint a { color: #6CB023; text-decoration: none; font-weight: 600; }
+
+/* Result card */
+.trk-card {
+    background: #fff;
+    border: 1.5px solid #eaf0ea;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(108,176,35,.07);
+}
+.trk-card-hd {
+    background: linear-gradient(135deg, #6CB023 0%, #4e8c10 100%);
+    color: #fff;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.trk-order-id { font-size: 18px; font-weight: 800; letter-spacing: .5px; }
+.trk-order-date { font-size: 12.5px; opacity: .85; margin-top: 2px; }
+.trk-badge {
+    background: rgba(255,255,255,.2);
+    border: 1.5px solid rgba(255,255,255,.4);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.trk-badge-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    animation: trk-pulse 1.4s ease-in-out infinite;
+}
+@keyframes trk-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+/* Info grid */
+.trk-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0;
+    border-bottom: 1.5px solid #f0f4f0;
+}
+.trk-info-cell {
+    padding: 16px 24px;
+    border-right: 1.5px solid #f0f4f0;
+}
+.trk-info-cell:last-child { border-right: none; }
+.trk-info-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: #9aaa9a; margin-bottom: 4px; }
+.trk-info-val { font-size: 14px; font-weight: 700; color: #1a2e1a; }
+
+/* Progress stepper */
+.trk-steps-wrap { padding: 24px 24px 8px; }
+.trk-steps-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: #9aaa9a; margin-bottom: 20px; }
+.trk-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+}
+.trk-steps::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 0; right: 0;
+    height: 3px;
+    background: #e8f0e8;
+    z-index: 0;
+}
+.trk-progress-bar {
+    position: absolute;
+    top: 18px;
+    left: 0;
+    height: 3px;
+    background: #6CB023;
+    z-index: 1;
+    transition: width .6s ease;
+}
+.trk-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+}
+.trk-step-dot {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #eaf3e0;
+    border: 3px solid #d0e8b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .3s;
+}
+.trk-step.done .trk-step-dot {
+    background: #6CB023;
+    border-color: #6CB023;
+    box-shadow: 0 0 0 4px rgba(108,176,35,.15);
+}
+.trk-step.active .trk-step-dot {
+    background: #fff;
+    border-color: #6CB023;
+    box-shadow: 0 0 0 4px rgba(108,176,35,.2);
+    animation: trk-ring 1.5s ease-in-out infinite;
+}
+@keyframes trk-ring { 0%,100%{box-shadow:0 0 0 4px rgba(108,176,35,.2)} 50%{box-shadow:0 0 0 8px rgba(108,176,35,.08)} }
+.trk-step-dot svg { transition: all .3s; }
+.trk-step.done .trk-step-dot svg { stroke: #fff; }
+.trk-step.active .trk-step-dot svg { stroke: #6CB023; }
+.trk-step:not(.done):not(.active) .trk-step-dot svg { stroke: #c0d4b0; }
+.trk-step-label { font-size: 11px; font-weight: 700; text-align: center; color: #9aaa9a; letter-spacing: .3px; line-height: 1.3; max-width: 68px; }
+.trk-step.done .trk-step-label,
+.trk-step.active .trk-step-label { color: #2e5e10; }
+.trk-step-time { font-size: 10px; color: #b0c0a8; text-align: center; }
+
+/* Address */
+.trk-address-wrap { padding: 16px 24px 22px; border-top: 1.5px solid #f0f4f0; }
+.trk-address-lbl { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px; color: #9aaa9a; margin-bottom: 6px; }
+.trk-address-val { font-size: 13.5px; color: #2a3e2a; font-weight: 500; }
+
+/* Error / empty */
+.trk-msg {
+    text-align: center;
+    padding: 48px 24px;
+    color: #9aaa9a;
+}
+.trk-msg svg { margin-bottom: 12px; opacity: .4; }
+.trk-msg h3 { font-size: 16px; color: #3a4e3a; margin-bottom: 6px; }
+.trk-msg p { font-size: 13px; }
+</style>
+
+<div class="toast" id="toast"></div>
+
+<script src="../js/product-img.js"></script>
+<script>
+const API = '../api';
+
+/* ── Helpers ─────────────────────────────────────── */
+function getUser() {
+    try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch { return null; }
+}
+function esc(str) {
+    const d = document.createElement('div'); d.textContent = String(str || ''); return d.innerHTML;
+}
+function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg; t.className = `toast ${type} show`;
+    setTimeout(() => { t.className = 'toast'; }, 3200);
+}
+function fmt(ds) {
+    if (!ds) return '—';
+    return new Date(ds).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+/* ── Auth Guard ─────────────────────────────────── */
+const _u = getUser();
+if (!_u) window.location.href = '../login.html';
+
+/* ── Init ───────────────────────────────────────── */
+let _ordersLoaded = false; // track whether orders have been fetched yet
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (_u) {
+        const initial = (_u.name || 'U').charAt(0).toUpperCase();
+        const av = document.getElementById('up-avatar');
+        const un = document.getElementById('up-username');
+        if (av) av.textContent = initial;
+        if (un) un.textContent = _u.name || 'Customer';
+    }
+
+    // Only load profile data on page load — orders are loaded lazily
+    // when the user clicks "Order History" in the sidebar.
+    loadProfile();
+    fetchOrderCountBadge(); // show the sidebar badge without a full order fetch
+
+    /* ── Handle post-checkout redirect ── */
+    const params  = new URLSearchParams(window.location.search);
+    const placed  = params.get('placed');
+    const orderId = params.get('order_id');
+
+    if (placed === '1' && orderId) {
+        // Auto-switch to orders tab and show success banner
+        switchTab('orders', document.getElementById('nav-orders'));
+
+        const ordersPanel = document.getElementById('tab-orders');
+        const banner = document.createElement('div');
+        banner.className = 'up-success-banner';
+        banner.innerHTML = `
+            <div class="up-success-banner-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+                <h4>Order Placed Successfully!</h4>
+                <p>Your order has been received and is being processed. We'll deliver within 24–48 hours.</p>
+            </div>`;
+        ordersPanel.insertBefore(banner, ordersPanel.firstChild);
+
+        window.history.replaceState({}, '', window.location.pathname);
+
+        // Mark as loaded so switchTab doesn't double-fetch
+        _ordersLoaded = true;
+        loadOrders(orderId);
+    }
+});
+
+/* ── Tab Switching ─────────────────────────────── */
+function switchTab(tab, btn) {
+    document.querySelectorAll('.up-tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.up-nav-item').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    btn.classList.add('active');
+
+    // Lazy-load orders the first time the Order History tab is opened
+    if (tab === 'orders' && !_ordersLoaded) {
+        _ordersLoaded = true;
+        loadOrders(null);
+    }
+}
+
+/* ── Order Count Badge (lightweight, no full fetch) ─────────── */
+async function fetchOrderCountBadge() {
+    try {
+        const res  = await fetch(`${API}/orders.php?action=my_orders`);
+        const data = await res.json();
+        if (data.status === 'login') {
+            localStorage.removeItem('user');
+            window.location.replace('../index.html');
+            return;
+        }
+        const count = (data.orders || []).length;
+        const badge = document.getElementById('nav-orders-badge');
+        if (badge && count > 0) {
+            badge.textContent = count;
+            badge.style.display = 'inline-flex';
+        }
+    } catch(e) {}
+}
+
+/* ── Load Profile ─────────────────────────────── */
+async function loadProfile() {
+    try {
+        const res  = await fetch(`${API}/user.php`);
+        const data = await res.json();
+        if (data.status !== 'success') return;
+        const u = data.user;
+        if (u.name)    document.getElementById('pf-name').value    = u.name;
+        if (u.email)   document.getElementById('pf-email').value   = u.email;
+        if (u.phone)   document.getElementById('pf-phone').value   = u.phone;
+        if (u.address) document.getElementById('pf-address').value = u.address;
+    } catch(e) { console.error('Profile load error', e); }
+}
+
+/* ── Save Profile ─────────────────────────────── */
+async function saveProfile() {
+    const name    = document.getElementById('pf-name')?.value.trim();
+    const phone   = document.getElementById('pf-phone')?.value.trim();
+    const address = document.getElementById('pf-address')?.value.trim();
+    const btn     = document.getElementById('save-btn');
+    if (!name) { showToast('Name is required', 'error'); return; }
+
+    const orig = btn.textContent.trim();
+    btn.disabled = true;
+    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="animation:spin .7s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> Saving...`;
+
+    try {
+        const res  = await fetch(`${API}/user.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'update', name, phone, address })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+            const stored = getUser();
+            if (stored) { stored.name = name; localStorage.setItem('user', JSON.stringify(stored)); }
+            document.getElementById('up-username').textContent = name;
+            document.getElementById('up-avatar').textContent = name.charAt(0).toUpperCase();
+            showToast('Profile updated successfully');
+        } else {
+            showToast(data.message || 'Update failed', 'error');
+        }
+    } catch { showToast('Connection error', 'error'); }
+
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg> Save Changes`;
+}
+
+/* ── Load Orders ──────────────────────────────── */
+const STATUS_MAP = {
+    'Pending':           { cls:'s-pending',   dot:'#f57c00', text:'Pending'           },
+    'Confirmed':         { cls:'s-confirmed', dot:'#1565c0', text:'Confirmed'         },
+    'Processing':        { cls:'s-processing',dot:'#6a1b9a', text:'Processing'        },
+    'Out for Delivery':  { cls:'s-delivery',  dot:'#00838f', text:'Out for Delivery'  },
+    'Delivered':         { cls:'s-delivered', dot:'#2e7d32', text:'Delivered'         },
+    'Cancelled':         { cls:'s-cancelled', dot:'#c62828', text:'Cancelled'         },
+};
+function statusBadge(s) {
+    const m = STATUS_MAP[s] || { cls:'s-pending', dot:'#888', text: s };
+    return `<span class="up-status ${m.cls}">
+        <span class="up-status-dot" style="background:${m.dot};"></span>${esc(m.text)}
+    </span>`;
+}
+
+function itemImg(item) {
+    return PROD_IMG.resolve(item, '../uploads/products/', 80, 80);
+}
+
+async function loadOrders(highlightId) {
+    const container = document.getElementById('orders-container');
+    try {
+        const res  = await fetch(`${API}/orders.php?action=my_orders`);
+        const data = await res.json();
+
+        if (data.status === 'login') { window.location.href = '../login.html'; return; }
+
+        const orders = data.orders || [];
+
+        /* update sidebar Order History badge */
+        const badge = document.getElementById('nav-orders-badge');
+        if (badge && orders.length) {
+            badge.textContent = orders.length;
+            badge.style.display = 'inline-flex';
+        }
+
+        /* stats */
+        const total     = orders.length;
+        const delivered = orders.filter(o => o.status === 'Delivered').length;
+        const pending   = orders.filter(o => o.status === 'Pending').length;
+        const spent     = orders.reduce((s, o) => s + parseFloat(o.total_amount || 0), 0);
+
+        document.getElementById('stat-total').textContent     = total;
+        document.getElementById('stat-delivered').textContent = delivered;
+        document.getElementById('stat-pending').textContent   = pending;
+        document.getElementById('stat-spent').textContent     = '\u09F3' + spent.toFixed(0);
+
+        if (!orders.length) {
+            container.innerHTML = `
+                <div class="up-empty">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                    <h3>No orders yet</h3>
+                    <p>Your order history will appear here once you place your first order.</p>
+                    <a href="../products.html" class="up-shop-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                        Start Shopping
+                    </a>
+                </div>`;
+            return;
+        }
+
+        /* ── Progress Steps ── */
+        const PROG_STEPS = [
+            { key:'Pending',          label:'Order\nPlaced',     icon:'<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>' },
+            { key:'Confirmed',        label:'Confirmed',          icon:'<polyline points="20 6 9 17 4 12"/>' },
+            { key:'Processing',       label:'Processing',         icon:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>' },
+            { key:'Out for Delivery', label:'Out for\nDelivery', icon:'<rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>' },
+            { key:'Delivered',        label:'Delivered',         icon:'<path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' },
+        ];
+        const PROG_ORDER = ['Pending','Confirmed','Processing','Out for Delivery','Delivered'];
+
+        function renderProgress(status) {
+            if (status === 'Cancelled') return `<div style="padding:12px 0;text-align:center;color:#c62828;font-size:13px;font-weight:700;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c62828" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Order Cancelled</div>`;
+            const curIdx = PROG_ORDER.indexOf(status);
+            const pct = Math.max(0, Math.min(100, (curIdx / (PROG_ORDER.length - 1)) * 100));
+            const steps = PROG_STEPS.map((s, i) => {
+                const sIdx = PROG_ORDER.indexOf(s.key);
+                const cls  = curIdx > sIdx ? 'done' : curIdx === sIdx ? 'active' : '';
+                return `<div class="up-prog-step ${cls}">
+                    <div class="up-prog-dot">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">${s.icon}</svg>
+                    </div>
+                    <div class="up-prog-lbl">${s.label.replace('\n','<br>')}</div>
+                </div>`;
+            }).join('');
+            return `<div class="up-progress-wrap">
+                <div class="up-progress-label">Delivery Progress</div>
+                <div class="up-progress-steps">
+                    <div class="up-progress-fill" style="width:${pct}%"></div>
+                    ${steps}
+                </div>
+            </div>`;
+        }
+
+        container.innerHTML = `<div class="up-orders-list">
+            ${orders.map(o => {
+                const isNew = highlightId && String(o.id) === String(highlightId);
+                return `
+            <div class="up-order-card" id="order-card-${o.id}" style="${isNew ? 'border-color:#6CB023;box-shadow:0 0 0 3px rgba(108,176,35,.15);' : ''}">
+                <div class="up-order-hd">
+                    <div class="up-order-id-wrap">
+                        <div class="up-order-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6CB023" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                        </div>
+                        <div>
+                            <span class="up-order-num">#${esc(String(o.id).slice(-8).toUpperCase())}</span>
+                            <span class="up-order-date">${fmt(o.created_at)}</span>
+                        </div>
+                    </div>
+                    <div class="up-order-meta">
+                        <span style="font-family:'Josefin Sans',sans-serif;font-size:17px;font-weight:700;color:#6CB023;">\u09F3${parseFloat(o.total_amount).toFixed(2)}</span>
+                        ${statusBadge(o.status)}
+                    </div>
+                </div>
+                <div class="up-order-body">
+                    <div class="up-order-meta-grid">
+                        <div class="up-meta-item">
+                            <span class="up-meta-lbl">Payment</span>
+                            <span class="up-meta-val">${esc(o.payment_method || '—')}</span>
+                        </div>
+                        <div class="up-meta-item">
+                            <span class="up-meta-lbl">Order Date</span>
+                            <span class="up-meta-val">${fmt(o.created_at)}</span>
+                        </div>
+                        <div class="up-meta-item">
+                            <span class="up-meta-lbl">Delivery Address</span>
+                            <span class="up-meta-val" style="font-size:12.5px;line-height:1.4;">${esc(o.delivery_address || '—')}</span>
+                        </div>
+                    </div>
+                    ${o.items && o.items.length ? `
+                    <div class="up-items-list">
+                        ${o.items.map(item => {
+                            const iSrc = itemImg(item);
+                            const iFb  = PROD_IMG.byName(item.product_name || item.name, item.category, 80, 80);
+                            return `
+                        <div class="up-item-row">
+                            <img class="up-item-img" src="${iSrc}" alt="${esc(item.product_name || '')}" onerror="this.src='${iFb}'">
+                            <div class="up-item-info">
+                                <span class="up-item-name">${esc(item.product_name || 'Product')}</span>
+                                <span class="up-item-qty">Qty: ${item.quantity} &times; \u09F3${parseFloat(item.price).toFixed(2)}</span>
+                            </div>
+                            <span class="up-item-price">\u09F3${(item.quantity * item.price).toFixed(2)}</span>
+                        </div>`;
+                        }).join('')}
+                    </div>` : ''}
+                    ${renderProgress(o.status)}
+                </div>
+            </div>`;}).join('')}
+        </div>`;
+
+        /* scroll to highlighted order */
+        if (highlightId) {
+            setTimeout(() => {
+                const card = document.getElementById(`order-card-${highlightId}`);
+                if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 200);
+        }
+
+    } catch(e) {
+    }
+}
+
+/* ── Order Tracking ─────────────────────────────── */
+const TRK_STEPS = [
+    { key: 'Pending',          label: 'Order\nPlaced',      icon: '<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>' },
+    { key: 'Confirmed',        label: 'Confirmed',          icon: '<polyline points="20 6 9 17 4 12"/>' },
+    { key: 'Processing',       label: 'Processing',         icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>' },
+    { key: 'Out for Delivery', label: 'Out for\nDelivery',  icon: '<rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>' },
+    { key: 'Delivered',        label: 'Delivered',          icon: '<path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' },
+];
+const TRK_ORDER = ['Pending','Confirmed','Processing','Out for Delivery','Delivered'];
+
+async function trackOrder() {
+    const raw   = (document.getElementById('trk-input')?.value || '').trim();
+    const result = document.getElementById('trk-result');
+    if (!raw) { result.innerHTML = `<div class="trk-msg"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3>Enter an Order ID</h3><p>Please type your order ID above to track it.</p></div>`; return; }
+
+    const btn = document.getElementById('trk-btn');
+    btn.disabled = true;
+    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" style="animation:spin .7s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> Tracking...`;
+    result.innerHTML = '';
+
+    try {
+        /* Try fetching user's orders and find match */
+        const res  = await fetch(`${API}/orders.php?action=my_orders`);
+        const data = await res.json();
+        const orders = data.orders || [];
+
+        /* Match by last-8 of ID or full ID */
+        const order = orders.find(o => {
+            const shortId = String(o.id).slice(-8).toUpperCase();
+            const searchVal = raw.replace('ORD-','').replace('#','');
+            return shortId === searchVal || String(o.id) === raw;
+        });
+
+        if (!order) {
+            result.innerHTML = `<div class="trk-msg"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#e05252" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><h3>Order Not Found</h3><p>No order matching <strong>${esc(raw)}</strong> was found in your account.</p></div>`;
+        } else {
+            renderTrackingCard(order, result);
+        }
+    } catch(e) {
+        result.innerHTML = `<div class="trk-msg"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#e05252" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg><h3>Connection Error</h3><p>Could not reach the server. Make sure XAMPP is running.</p></div>`;
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg> Track`;
+}
+
+function renderTrackingCard(o, container) {
+    const currentIdx = TRK_ORDER.indexOf(o.status);
+    const isCancelled = o.status === 'Cancelled';
+    const progressPct = isCancelled ? 0 : Math.max(0, Math.min(100, (currentIdx / (TRK_ORDER.length - 1)) * 100));
+    const shortId = 'ORD-' + String(o.id).slice(-8).toUpperCase();
+
+    const stepsHtml = TRK_STEPS.map((step, i) => {
+        const stepIdx = TRK_ORDER.indexOf(step.key);
+        const isDone   = !isCancelled && currentIdx > stepIdx;
+        const isActive = !isCancelled && currentIdx === stepIdx;
+        const cls = isDone ? 'done' : isActive ? 'active' : '';
+        return `<div class="trk-step ${cls}">
+            <div class="trk-step-dot">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">${step.icon}</svg>
+            </div>
+            <div class="trk-step-label">${step.label.replace('\n','<br>')}</div>
+            ${isDone || isActive ? `<div class="trk-step-time">${fmt(o.created_at)}</div>` : '<div class="trk-step-time">&nbsp;</div>'}
+        </div>`;
+    }).join('');
+
+    const statusColor = isCancelled ? '#c62828' : '#6CB023';
+
+    container.innerHTML = `
+    <div class="trk-card">
+        <div class="trk-card-hd">
+            <div>
+                <div class="trk-order-id">${esc(shortId)}</div>
+                <div class="trk-order-date">Placed on ${fmt(o.created_at)}</div>
+            </div>
+            <div class="trk-badge" style="border-color:rgba(255,255,255,.4);">
+                ${isCancelled ? '' : '<div class="trk-badge-dot"></div>'}
+                ${esc(o.status)}
+            </div>
+        </div>
+        <div class="trk-info-grid">
+            <div class="trk-info-cell">
+                <div class="trk-info-lbl">Total Amount</div>
+                <div class="trk-info-val" style="color:#6CB023;">&#2547;${parseFloat(o.total_amount).toFixed(2)}</div>
+            </div>
+            <div class="trk-info-cell">
+                <div class="trk-info-lbl">Payment</div>
+                <div class="trk-info-val">${esc(o.payment_method || '—')}</div>
+            </div>
+            <div class="trk-info-cell">
+                <div class="trk-info-lbl">Items</div>
+                <div class="trk-info-val">${(o.items || []).length} item${(o.items||[]).length !== 1 ? 's' : ''}</div>
+            </div>
+        </div>
+        ${isCancelled ? `
+        <div style="padding:28px 24px;text-align:center;">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#c62828" stroke-width="1.5" style="margin-bottom:10px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <p style="font-size:15px;font-weight:700;color:#c62828;">This order has been cancelled.</p>
+        </div>` : `
+        <div class="trk-steps-wrap">
+            <div class="trk-steps-title">Delivery Progress</div>
+            <div class="trk-steps">
+                <div class="trk-progress-bar" style="width:${progressPct}%"></div>
+                ${stepsHtml}
+            </div>
+        </div>`}
+        <div class="trk-address-wrap">
+            <div class="trk-address-lbl">Delivery Address</div>
+            <div class="trk-address-val">${esc(o.delivery_address || '—')}</div>
+        </div>
+    </div>`;
+}
+
+/* ── Logout ─────────────────────────────────────── */
+async function userLogout() {
+    await fetch(`${API}/logout.php`).catch(() => {});
+    localStorage.removeItem('user');
+    window.location.href = '../index.html';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - FreshHut</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Josefin+Sans:wght@300;400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div class="top-bar-inner">
+        <div class="top-bar-left"></div>
+        <div class="top-bar-center">
+            Welcome to our Organic store <strong>FreshHut!</strong>
+        </div>
+
+    </div>
+</div>
+
+<!-- MAIN HEADER -->
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="logo fm-logo">
+            <span class="fm-logo-mark" aria-hidden="true">
+                <svg viewBox="0 0 40 40" width="38" height="38"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#g1)"/><path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/><path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </span>
+            <div class="logo-text">
+                <span class="logo-name">FreshHut</span>
+                <span class="logo-tagline">Farm to Your Door</span>
+            </div>
+        </a>
+
+        <div class="header-search">
+            <div class="search-box">
+                <input type="text" id="srch" placeholder="Search for products, categories...">
+                <button onclick="doSearch()" class="search-submit-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Search
+                </button>
+            </div>
+        </div>
+
+        <div class="header-icons">
+            <div class="hicon-dropdown" id="account-dropdown-wrap">
+                <a href="#" class="hicon" id="header-account-link" onclick="toggleAccountDropdown(event)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="hicon-label" id="account-label">Account</span>
+                </a>
+                <div class="account-dropdown" id="account-dropdown">
+                    <a href="login.html" class="account-dropdown-item">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Login
+                    </a>
+                    <a href="register.html" class="account-dropdown-item">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Register
+                    </a>
+                </div>
+            </div>
+            <a href="cart.html" class="hicon hicon-cart" title="Shopping Cart">
+                <div class="cart-wrap-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                    <span class="cart-count-badge" id="cart-count">0</span>
+                </div>
+                <span class="hicon-label">My Cart</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- NAVIGATION (sticky) -->
+<nav class="main-nav">
+    <div class="nav-inner">
+        <div class="nav-cats-wrap header-cats">
+            <button class="nav-cats-toggle" id="cats-toggle-btn" onclick="toggleCatMenu(this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                All Categories
+                <svg class="cat-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cats-dropdown" id="cats-dropdown">
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e8f5e9;"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=40&h=40&fit=crop" alt="Vegetables"></span>Vegetables</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fff3e0;"><img src="https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=40&h=40&fit=crop" alt="Fruits"></span>Fruits</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e3f2fd;"><img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=40&h=40&fit=crop" alt="Dairy"></span>Dairy &amp; Eggs</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fce4ec;"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=40&h=40&fit=crop" alt="Bakery"></span>Breads &amp; Bakery</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#f3e5f5;"><img src="uploads/products/Bevarage.jpeg" 
+                alt="Beverages"></span>Beverages</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#fff8e1;"><img src="https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=40&h=40&fit=crop" alt="Snacks"></span>Snacks &amp; Chips</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e8eaf6;"><img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=40&h=40&fit=crop" alt="Frozen"></span>Frozen Foods</a>
+                <a href="products.html" class="cat-drop-item"><span class="cat-drop-icon" style="background:#e0f2f1;"><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=40&h=40&fit=crop" alt="Health"></span>Health &amp; Organic</a>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link nav-link-active">Home</a>
+            <a href="products.html" class="nav-link">Products</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-promo-text">
+            Get 10% off with code
+            <span class="nav-promo-badge">FRESH10</span>
+        </div>
+    </div>
+</nav>
+
+<style>
+/* ── Checkout Page ───────────────────────────────────────────────────── */
+.co-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px 64px;
+}
+.co-breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: #888; margin-bottom: 28px;
+}
+.co-breadcrumb a { color: #3a7d2c; text-decoration: none; font-weight: 500; }
+.co-breadcrumb a:hover { text-decoration: underline; }
+
+/* Steps */
+.co-steps {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 36px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.co-step {
+    display: flex; align-items: center; gap: 10px;
+    flex: 1;
+}
+.co-step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    background: #e0e0e0; color: #999;
+    flex-shrink: 0; transition: all 0.2s;
+}
+.co-step.done .co-step-num { background: #4caf50; color: #fff; }
+.co-step.active .co-step-num { background: #2e7d32; color: #fff; box-shadow: 0 0 0 4px rgba(46,125,50,0.15); }
+.co-step-label { font-size: 13px; font-weight: 600; color: #999; }
+.co-step.done .co-step-label { color: #4caf50; }
+.co-step.active .co-step-label { color: #2e7d32; }
+.co-step-line {
+    flex: 1; height: 2px; background: #e0e0e0;
+    margin: 0 12px; border-radius: 2px;
+}
+.co-step-line.done { background: #4caf50; }
+
+/* Grid */
+.co-grid {
+    display: grid;
+    grid-template-columns: 1fr 390px;
+    gap: 28px;
+    align-items: start;
+}
+@media (max-width: 920px) { .co-grid { grid-template-columns: 1fr; } }
+
+/* Panels */
+.co-panel {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    overflow: hidden;
+}
+.co-panel-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.co-panel-head-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: #e8f5e9;
+    display: flex; align-items: center; justify-content: center;
+    color: #2e7d32; flex-shrink: 0;
+}
+.co-panel-head h3 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 17px; font-weight: 700; color: #1a3c1f; margin: 0;
+}
+.co-panel-body { padding: 24px; }
+
+/* Form */
+.co-form-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-bottom: 16px;
+}
+.co-form-row.full { grid-template-columns: 1fr; }
+.co-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.co-field label {
+    font-size: 13px; font-weight: 600; color: #444;
+    display: flex; align-items: center; gap: 5px;
+}
+.co-field label .required { color: #e53935; }
+.co-field input, .co-field textarea, .co-field select {
+    border: 1.5px solid #e0e0e0; border-radius: 10px;
+    padding: 11px 14px; font-size: 14px; font-family: inherit;
+    color: #222; outline: none; transition: border 0.15s, box-shadow 0.15s;
+    background: #fff;
+}
+.co-field input:focus, .co-field textarea:focus, .co-field select:focus {
+    border-color: #2e7d32; box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+}
+.co-field input.readonly-field {
+    background: #f9f9f9; color: #666; cursor: default;
+    border-style: dashed;
+}
+.co-field textarea { resize: vertical; min-height: 90px; }
+.co-field .field-hint { font-size: 12px; color: #aaa; }
+
+/* Phone editable row */
+.phone-row { display: flex; gap: 8px; align-items: flex-end; }
+.phone-row .co-field { flex: 1; margin-bottom: 0; }
+.phone-edit-btn {
+    height: 42px; padding: 0 14px;
+    border: 1.5px solid #2e7d32; border-radius: 10px;
+    background: #fff; color: #2e7d32;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; gap: 6px;
+    white-space: nowrap; flex-shrink: 0;
+}
+.phone-edit-btn:hover { background: #2e7d32; color: #fff; }
+.phone-edit-btn.save-mode { border-color: #4caf50; color: #4caf50; }
+.phone-edit-btn.save-mode:hover { background: #4caf50; color: #fff; }
+
+/* Payment Methods */
+.co-section-label {
+    font-size: 13px; font-weight: 600; color: #444;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+}
+.payment-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    margin-bottom: 16px;
+}
+.payment-card {
+    border: 1.5px solid #e0e0e0; border-radius: 12px;
+    padding: 14px 16px; cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    transition: all 0.15s; user-select: none;
+    background: #fff;
+}
+.payment-card:hover { border-color: #a5d6a7; background: #f9fdf9; }
+.payment-card.selected { border-color: #2e7d32; background: #f1f8e9; box-shadow: 0 0 0 3px rgba(46,125,50,0.12); }
+.payment-card input[type=radio] { display: none; }
+.payment-card-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: #e8f5e9; flex-shrink: 0;
+}
+.payment-card-label { font-size: 14px; font-weight: 600; color: #1a3c1f; }
+.payment-card-sub { font-size: 11px; color: #aaa; }
+
+/* bKash pink, nagad orange, rocket purple */
+.pay-bkash .payment-card-icon { background: #fce4ec; }
+.pay-nagad .payment-card-icon { background: #fff3e0; }
+.pay-rocket .payment-card-icon { background: #ede7f6; }
+
+/* Section divider */
+.co-divider { border: none; border-top: 1px solid #f0f0f0; margin: 20px 0; }
+
+/* Place Order */
+.btn-place-order {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; background: #2e7d32; color: #fff; border: none;
+    border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: background 0.2s, transform 0.15s;
+    font-family: inherit;
+}
+.btn-place-order:hover { background: #1b5e20; transform: translateY(-1px); }
+.btn-place-order:disabled { background: #a5d6a7; cursor: not-allowed; transform: none; }
+.btn-back-cart {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; background: #f5f5f5; color: #555; border: none;
+    border-radius: 12px; padding: 13px; font-size: 14px; font-weight: 600;
+    cursor: pointer; text-decoration: none; transition: background 0.2s;
+    margin-top: 10px; font-family: inherit;
+}
+.btn-back-cart:hover { background: #ebebeb; }
+
+/* Order Summary */
+.co-order-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid #f5f5f5;
+}
+.co-order-item:last-child { border-bottom: none; }
+.co-order-item-left { display: flex; align-items: center; gap: 12px; }
+.co-order-item-img {
+    width: 56px; height: 56px; border-radius: 10px;
+    object-fit: cover; border: 1px solid #e8f5e9; background: #f5f5f5;
+    flex-shrink: 0;
+}
+.co-order-item-name { font-size: 14px; font-weight: 600; color: #1a3c1f; }
+.co-order-item-meta { font-size: 12px; color: #aaa; margin-top: 2px; }
+.co-order-item-price { font-size: 14px; font-weight: 700; color: #2e7d32; }
+
+.co-summary-row {
+    display: flex; justify-content: space-between;
+    font-size: 14px; color: #666; margin-bottom: 10px;
+}
+.co-summary-row span:last-child { font-weight: 600; color: #1a3c1f; }
+.co-total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #e8f5e9; border-radius: 10px; padding: 14px 16px; margin: 14px 0;
+}
+.co-total-row .label { font-size: 15px; font-weight: 700; color: #1a3c1f; }
+.co-total-row .amount { font-size: 20px; font-weight: 800; color: #2e7d32; }
+
+/* Promo / Discount Code */
+.co-promo-wrap {
+    margin: 12px 0 4px;
+    padding: 14px;
+    background: #f9fdf9;
+    border: 1.5px dashed #c5e1a5;
+    border-radius: 10px;
+}
+.co-promo-row {
+    display: flex; gap: 8px;
+}
+.co-promo-input {
+    flex: 1;
+    border: 1.5px solid #e0e0e0; border-radius: 8px;
+    padding: 9px 12px; font-size: 13px; font-family: inherit;
+    color: #222; outline: none;
+    transition: border 0.15s, box-shadow 0.15s;
+    background: #fff; letter-spacing: 1px; font-weight: 600;
+}
+.co-promo-input:focus {
+    border-color: #2e7d32; box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+}
+.co-promo-btn {
+    padding: 9px 18px;
+    background: #2e7d32; color: #fff; border: none;
+    border-radius: 8px; font-size: 13px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+.co-promo-btn:hover:not(:disabled) { background: #1b5e20; }
+.co-promo-btn:disabled { cursor: not-allowed; }
+.co-promo-msg {
+    font-size: 12px; margin-top: 7px; font-weight: 600;
+}
+.co-promo-msg.success { color: #2e7d32; }
+.co-promo-msg.error   { color: #e53935; }
+
+
+.co-trust {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-top: 16px;
+}
+.co-trust-item {
+    display: flex; align-items: center; gap: 8px;
+    background: #f9fdf9; border: 1px solid #e8f5e9;
+    border-radius: 10px; padding: 10px 12px;
+    font-size: 12px; color: #555; font-weight: 500;
+}
+.co-trust-item svg { color: #2e7d32; flex-shrink: 0; }
+
+/* Delivery info banner */
+.co-delivery-banner {
+    display: flex; align-items: center; gap: 10px;
+    background: #f1f8e9; border: 1px solid #c5e1a5;
+    border-radius: 10px; padding: 12px 16px;
+    font-size: 13px; color: #33691e; font-weight: 500;
+    margin-bottom: 16px;
+}
+</style>
+
+<div class="co-wrap">
+    <!-- Breadcrumb -->
+    <div class="co-breadcrumb">
+        <a href="index.html">Home</a>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="cart.html">My Cart</a>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>Checkout</span>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="co-steps">
+        <div class="co-step done">
+            <div class="co-step-num">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="co-step-label">Cart</span>
+        </div>
+        <div class="co-step-line done"></div>
+        <div class="co-step active">
+            <div class="co-step-num">2</div>
+            <span class="co-step-label">Checkout</span>
+        </div>
+        <div class="co-step-line"></div>
+        <div class="co-step">
+            <div class="co-step-num">3</div>
+            <span class="co-step-label">Confirmation</span>
+        </div>
+    </div>
+
+    <div id="checkout-container">
+        <div class="spinner"></div>
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-top">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <span class="fm-logo-mark" aria-hidden="true" style="border:2px solid #1b5e20;border-radius:50%;display:inline-flex;">
+                    <svg viewBox="0 0 40 40" width="38" height="38"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2e7d32"/><stop offset="1" stop-color="#66bb6a"/></linearGradient></defs><circle cx="20" cy="20" r="19" fill="url(#g1)"/><path d="M20 9c-1 4-5 5-5 10 0 4 3 7 5 7s5-3 5-7c0-5-4-6-5-10z" fill="#fff"/><path d="M20 14v14" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+                <div class="logo-text">
+                    <span class="logo-name" style="color:#fff;">FreshHut</span>
+                    <span class="logo-tagline" style="color:rgba(255,255,255,0.65);">Farm to Your Door</span>
+                </div>
+            </div>
+            <p>Your trusted online grocery store delivering the freshest produce from farms directly to your doorstep in Dhaka.</p>
+            <div class="footer-contacts">
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.17 10.4a19.79 19.79 0 01-3.07-8.68A2 2 0 012.08 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+                    +880 1700 000000
+                </div>
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    support@freshhut.com.bd
+                </div>
+                <div class="footer-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Delivery: Dhaka, Bangladesh
+                </div>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="footer-social-btn" title="Facebook">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                </a>
+                <a href="#" class="footer-social-btn" title="Instagram">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="#" class="footer-social-btn" title="LinkedIn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="footer-right-col">
+            <div class="footer-deliver-col">
+                <h5>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="vertical-align:-2px;margin-right:6px;"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    We Deliver To
+                </h5>
+                <div class="footer-deliver-row">
+                    <span>Dhaka City</span>
+                    <span>Gulshan &amp; Banani</span>
+                    <span>Mirpur</span>
+                    <span>Uttara</span>
+                    <span>Dhanmondi</span>
+                    <span>Mohammadpur</span>
+                    <span>Wari</span>
+                    <span>Motijheel</span>
+                </div>
+            </div>
+            <div class="footer-legal-col">
+                <h5>Legal</h5>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-policy-bar">
+        <div class="footer-policy-inner">
+            <p>&copy; 2025 <strong>FreshHut</strong>. All rights reserved. Fresh groceries delivered to your door.</p>
+        </div>
+    </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- ── Order Success Overlay ── -->
+<style>
+/* ---- Overlay backdrop ---- */
+#order-success-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    background: rgba(15, 30, 15, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0; visibility: hidden;
+    transition: opacity .35s ease, visibility .35s ease;
+}
+#order-success-overlay.visible { opacity: 1; visibility: visible; }
+
+/* ---- Card ---- */
+.oso-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 48px 44px 40px;
+    max-width: 480px; width: 100%;
+    text-align: center;
+    box-shadow: 0 24px 80px rgba(0,0,0,.22), 0 2px 8px rgba(0,0,0,.08);
+    position: relative;
+    overflow: hidden;
+    animation: oso-pop .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes oso-pop {
+    from { transform: scale(.82) translateY(20px); opacity: 0; }
+    to   { transform: scale(1)   translateY(0);    opacity: 1; }
+}
+
+/* subtle top stripe */
+.oso-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, #4caf50, #6CB023, #8bc34a);
+    border-radius: 24px 24px 0 0;
+}
+
+/* ---- Animated check circle ---- */
+.oso-check-wrap {
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 28px; position: relative;
+}
+.oso-check-circle {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: linear-gradient(135deg, #43a047, #6CB023);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 28px rgba(108,176,35,.38);
+    transform: scale(0);
+    transition: transform .45s cubic-bezier(.34,1.56,.64,1);
+    position: relative; z-index: 1;
+}
+.oso-check-circle.animated { transform: scale(1); }
+.oso-check-circle svg { opacity: 0; transition: opacity .2s .4s; }
+.oso-check-circle.animated svg { opacity: 1; }
+
+/* ripple rings */
+.oso-ring {
+    position: absolute; border-radius: 50%;
+    border: 2px solid #6CB023; opacity: 0;
+}
+.oso-check-circle.animated ~ .oso-ring-1 { animation: oso-ring .9s .5s ease-out forwards; width: 88px; height: 88px; }
+.oso-check-circle.animated ~ .oso-ring-2 { animation: oso-ring 1.1s .65s ease-out forwards; width: 88px; height: 88px; }
+@keyframes oso-ring {
+    from { transform: scale(1); opacity: .6; }
+    to   { transform: scale(2.1); opacity: 0; }
+}
+
+/* ---- Text ---- */
+.oso-title {
+    font-size: 26px; font-weight: 800; color: #1b2e1b;
+    letter-spacing: -.4px; margin-bottom: 10px;
+}
+.oso-sub {
+    font-size: 15px; color: #5a6b5a; line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+/* ---- Order ID pill ---- */
+.oso-order-id {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: #f2faf0; border: 1.5px solid #c5e3b0;
+    border-radius: 30px; padding: 7px 18px;
+    font-size: 13.5px; font-weight: 700; color: #3a6b1a;
+    margin-bottom: 28px;
+}
+.oso-order-id svg { flex-shrink: 0; }
+
+/* ---- Stepper / track preview ---- */
+.oso-steps {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin-bottom: 30px;
+}
+.oso-step {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    flex: 1;
+}
+.oso-step-dot {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    transition: all .3s;
+}
+.oso-step-dot.done  { background: #6CB023; color: #fff; box-shadow: 0 3px 10px rgba(108,176,35,.35); }
+.oso-step-dot.next  { background: #fff; border: 2.5px solid #6CB023; color: #6CB023; }
+.oso-step-dot.idle  { background: #f5f7f5; border: 2px solid #dde8d8; color: #aaa; }
+.oso-step-label { font-size: 10.5px; font-weight: 600; color: #888; white-space: nowrap; }
+.oso-step-label.done { color: #4a7e1a; }
+.oso-step-label.next { color: #6CB023; }
+.oso-step-line {
+    height: 2.5px; flex: 1; border-radius: 2px;
+    background: #dde8d8; margin-bottom: 22px;
+    position: relative;
+}
+.oso-step-line.done { background: #6CB023; }
+
+/* ---- Buttons ---- */
+.oso-btns {
+    display: flex; flex-direction: column; gap: 10px;
+}
+.oso-btn-primary {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: linear-gradient(135deg, #4caf50, #6CB023);
+    color: #fff; border: none; border-radius: 12px;
+    padding: 14px 24px; font-size: 15px; font-weight: 700;
+    cursor: pointer; text-decoration: none;
+    box-shadow: 0 4px 16px rgba(108,176,35,.3);
+    transition: transform .15s, box-shadow .15s;
+}
+.oso-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(108,176,35,.4); }
+.oso-btn-secondary {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: transparent; color: #888;
+    border: 1.5px solid #e2eadf; border-radius: 12px;
+    padding: 12px 24px; font-size: 13.5px; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    transition: background .15s, color .15s, border-color .15s;
+}
+.oso-btn-secondary:hover { background: #f5faf3; color: #3a6b1a; border-color: #b5d9a0; }
+
+/* ---- Countdown ring ---- */
+.oso-countdown {
+    display: flex; align-items: center; justify-content: center;
+    gap: 7px; margin-top: 18px;
+    font-size: 12px; color: #aaa; font-weight: 600;
+}
+.oso-countdown-ring {
+    position: relative; width: 28px; height: 28px;
+}
+.oso-countdown-ring svg { transform: rotate(-90deg); }
+.oso-arc {
+    stroke: #6CB023;
+    stroke-dasharray: 163;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s linear;
+}
+.oso-arc-bg { stroke: #e8f0e4; }
+.oso-countdown-num {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800; color: #6CB023;
+}
+
+/* ---- Confetti dots (pure CSS) ---- */
+.oso-confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: 24px; }
+.oso-confetti span {
+    position: absolute; top: -10px;
+    width: 8px; height: 8px; border-radius: 50%;
+    animation: oso-fall 1.8s ease-in forwards;
+}
+.oso-confetti span:nth-child(1)  { left:10%; background:#6CB023; animation-delay:.1s; width:7px; height:7px; }
+.oso-confetti span:nth-child(2)  { left:20%; background:#fdd835; animation-delay:.25s; border-radius:2px; }
+.oso-confetti span:nth-child(3)  { left:35%; background:#ef5350; animation-delay:.15s; width:6px; height:10px; border-radius:2px; }
+.oso-confetti span:nth-child(4)  { left:50%; background:#42a5f5; animation-delay:.05s; }
+.oso-confetti span:nth-child(5)  { left:65%; background:#6CB023; animation-delay:.3s; border-radius:2px; }
+.oso-confetti span:nth-child(6)  { left:78%; background:#ab47bc; animation-delay:.2s; width:6px; height:6px; }
+.oso-confetti span:nth-child(7)  { left:88%; background:#fdd835; animation-delay:.1s; border-radius:2px; }
+.oso-confetti span:nth-child(8)  { left:45%; background:#ef5350; animation-delay:.4s; width:5px; height:9px; border-radius:2px; }
+@keyframes oso-fall {
+    0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
+    100% { transform: translateY(340px) rotate(520deg); opacity: 0; }
+}
+</style>
+
+<div id="order-success-overlay">
+    <div class="oso-card">
+        <!-- Confetti -->
+        <div class="oso-confetti">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+        </div>
+
+        <!-- Animated check -->
+        <div class="oso-check-wrap">
+            <div class="oso-check-circle">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="oso-ring oso-ring-1"></span>
+            <span class="oso-ring oso-ring-2"></span>
+        </div>
+
+        <h2 class="oso-title">Order Placed! 🎉</h2>
+        <p class="oso-sub">Your order has been confirmed and is being prepared.<br>You can track it anytime from your profile.</p>
+
+        <!-- Order ID -->
+        <div class="oso-order-id">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3a6b1a" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Order <span class="oso-order-id-val">#00000</span> confirmed
+        </div>
+
+        <!-- Status stepper -->
+        <div class="oso-steps">
+            <div class="oso-step">
+                <div class="oso-step-dot done">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span class="oso-step-label done">Confirmed</span>
+            </div>
+            <div class="oso-step-line done"></div>
+            <div class="oso-step">
+                <div class="oso-step-dot next">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6CB023" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                </div>
+                <span class="oso-step-label next">Preparing</span>
+            </div>
+            <div class="oso-step-line"></div>
+            <div class="oso-step">
+                <div class="oso-step-dot idle">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <span class="oso-step-label">On the way</span>
+            </div>
+            <div class="oso-step-line"></div>
+            <div class="oso-step">
+                <div class="oso-step-dot idle">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <span class="oso-step-label">Delivered</span>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="oso-btns">
+            <button class="oso-btn-primary" onclick="goToProfile()">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Go to Profile &amp; Track Order
+            </button>
+            <a href="index.html" class="oso-btn-secondary">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Continue Shopping
+            </a>
+        </div>
+
+
+    </div>
+</div>
+
+<script src="js/product-img.js"></script>
+<script src="js/checkout.js"></script>
+<script>
+function toggleCatMenu(btn) {
+    var d = document.getElementById('cats-dropdown');
+    if (d) d.classList.toggle('open');
+    btn.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-cats-wrap') && !e.target.closest('.header-cats')) {
+        var d = document.getElementById('cats-dropdown');
+        var b = document.getElementById('cats-toggle-btn');
+        if (d) d.classList.remove('open');
+        if (b) b.classList.remove('open');
+    }
+});
+function toggleAccountDropdown(e) {
+    e.preventDefault();
+    var dd = document.getElementById('account-dropdown');
+    if (dd) dd.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+    var wrap = document.getElementById('account-dropdown-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+        var dd = document.getElementById('account-dropdown');
+        if (dd) dd.classList.remove('open');
+    }
+}, true);
+(function() {
+    try {
+        var user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (!user) return;
+        var dest  = user.role === 'admin' ? 'admin/index.html' : 'user/profile.html';
+        var label = document.getElementById('account-label');
+        var link  = document.getElementById('header-account-link');
+        var dd    = document.getElementById('account-dropdown');
+        if (label) label.textContent = user.name.split(' ')[0];
+        if (link)  { link.href = dest; link.onclick = null; }
+        if (dd) dd.innerHTML =
+            '<a href="' + dest + '" class="account-dropdown-item">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Profile</a>' +
+            '<a href="tracking.html" class="account-dropdown-item">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>My Orders</a>' +
+            '<a href="#" onclick="doLogout(event)" class="account-dropdown-item" style="color:#c62828;">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>';
+    } catch(e) {}
+})();
+function doLogout(e) {
+    if (e) e.preventDefault();
+    fetch('api/logout.php').catch(function(){});
+    localStorage.removeItem('user');
+    window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>
