@@ -91,7 +91,7 @@ function runAutoSetup($host, $user, $pass, $db) {
             email          VARCHAR(150)  NOT NULL UNIQUE,
             password       VARCHAR(255)  NOT NULL,
             phone          VARCHAR(20)   DEFAULT '',
-            address        TEXT          DEFAULT '',
+            address        TEXT,
             role           ENUM('customer','admin') DEFAULT 'customer',
             remember_token VARCHAR(64)   DEFAULT NULL,
             created_at     TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
@@ -115,7 +115,7 @@ function runAutoSetup($host, $user, $pass, $db) {
             category_id INT            NOT NULL,
             price       DECIMAL(10,2)  NOT NULL DEFAULT 0,
             stock       INT            NOT NULL DEFAULT 0,
-            description TEXT           DEFAULT '',
+            description TEXT,
             image       VARCHAR(255)   DEFAULT 'default.jpg',
             created_at  TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
